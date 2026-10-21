@@ -18,92 +18,24 @@
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#FAF7F2;--bg2:#F3EDE4;--o:#B75419;--t:#3F3A36;--m:#7A716A;--line:rgba(183,84,25,.28)}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:76px}
-body{background:var(--bg);color:var(--t);font:400 17px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-h1,h2,h3{font-family:Quicksand,sans-serif;font-weight:300;letter-spacing:.08em;color:var(--t);line-height:1.2}
-h1{font-size:clamp(2.2rem,5.5vw,4.2rem);letter-spacing:.06em}
-h2{font-size:clamp(1.8rem,3.6vw,2.8rem);margin-bottom:1rem}
-h3{font-size:1.25rem;font-weight:400;letter-spacing:.1em;margin-bottom:.5rem}
-a{color:var(--o)}
-:focus-visible{outline:2px solid var(--o);outline-offset:3px}
-.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
-section{padding:110px 0;position:relative}
-section.alt{background:var(--bg2)}
-.eyebrow{display:inline-block;color:var(--o);font:600 .78rem Inter;letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.1rem}
-.eyebrow:before{content:"";display:inline-block;width:28px;height:1px;background:var(--o);vertical-align:middle;margin-right:12px}
-.lead{font-size:1.15rem;color:var(--m);max-width:760px}
-.muted{color:var(--m)}
-.grid{display:grid;gap:24px}
-.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
-.card{background:#fff9;border:1px solid var(--line);border-radius:4px;padding:30px;transition:border-color .3s,transform .3s}
-.card:hover{border-color:var(--o);transform:translateY(-2px)}
-.card .k{font:600 .75rem Inter;letter-spacing:.2em;color:var(--o);text-transform:uppercase;display:block;margin-bottom:.6rem}
-.btn{display:inline-block;padding:14px 28px;border-radius:2px;font:500 .9rem Inter;letter-spacing:.08em;text-decoration:none;border:1px solid var(--o);transition:.25s;cursor:pointer}
-.btn.p{background:var(--o);color:#fff}.btn.p:hover{background:#9c4612}
-.btn.s{color:var(--o);background:transparent}.btn.s:hover{background:var(--o);color:#fff}
-nav{position:sticky;top:0;z-index:50;background:rgba(250,247,242,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-nav .wrap{display:flex;align-items:center;justify-content:space-between;height:70px;gap:20px}
-nav img{height:18px;width:auto}
-nav ul{display:flex;gap:26px;list-style:none}
-nav ul a{color:var(--t);text-decoration:none;font-size:.85rem;letter-spacing:.06em}
-nav ul a:hover{color:var(--o)}
-nav .btn{padding:10px 18px;font-size:.8rem}
-.hero{padding:90px 0 120px;overflow:hidden;text-align:center}
-.hero .bgsvg{position:absolute;inset:0;width:100%;height:100%;opacity:.5;pointer-events:none}
-.hero .wrap{position:relative}
-.hero .logo{width:min(300px,70vw);height:auto;margin-bottom:46px}
-.hero h1 span{color:var(--o)}
-.hero .lead{margin:26px auto 40px}
-.hero .ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-.closing{margin-top:44px;padding:26px 30px;border-left:2px solid var(--o);font-size:1.15rem;background:#fff6}
-blockquote{font:300 clamp(1.5rem,3vw,2.3rem)/1.4 Quicksand;letter-spacing:.04em;text-align:center;max-width:900px;margin:70px auto 0;color:var(--t)}
-blockquote em{color:var(--o);font-style:normal}
-.icon{width:38px;height:38px;stroke:var(--o);fill:none;stroke-width:1.3;margin-bottom:16px}
-.split{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center}
-.triad svg{width:100%;max-width:480px;display:block;margin:auto}
-.flow{stroke-dasharray:6 8;animation:dash 1.6s linear infinite}
-@keyframes dash{to{stroke-dashoffset:-28}}
-.steps{display:grid;grid-template-columns:repeat(10,1fr);gap:0;margin:50px 0 60px;position:relative}
-.steps:before{content:"";position:absolute;top:22px;left:5%;right:5%;height:1px;background:var(--o)}
-.step{text-align:center;position:relative}
-.step b{display:flex;width:44px;height:44px;margin:0 auto 12px;border:1px solid var(--o);border-radius:50%;background:var(--bg);align-items:center;justify-content:center;font:500 .8rem Inter;color:var(--o)}
-.step span{font:400 .95rem Quicksand;letter-spacing:.06em}
-.stat{font:300 clamp(2.6rem,5vw,3.8rem)/1 Quicksand;color:var(--o);margin-bottom:12px;letter-spacing:.02em}
-.bankflow{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;margin:46px 0}
-.node{border:1px solid var(--line);padding:18px 26px;text-align:center;background:#fff8;min-width:150px}
-.node.f{border-color:var(--o);background:var(--o);color:#fff}
-.node.f small{color:#fde9dc}
-.node small{display:block;font-size:.78rem;color:var(--m);letter-spacing:.06em;margin-top:4px}
-.arrow{color:var(--o);font-size:1.4rem}
-.src{font-size:.8rem;color:var(--m);margin-top:10px}
-.road{display:grid;grid-template-columns:repeat(5,1fr);gap:20px;border-top:1px solid var(--o);padding-top:30px;margin-top:40px}
-.road div{position:relative}
-.road div:before{content:"";position:absolute;top:-36px;left:0;width:11px;height:11px;border-radius:50%;background:var(--o)}
-.road h3{color:var(--o);font-size:1.6rem;letter-spacing:.06em}
-.team{display:flex;gap:26px;align-items:center;max-width:520px}
-.mono{width:86px;height:86px;border-radius:50%;background:var(--o);color:#fff;display:flex;align-items:center;justify-content:center;font:300 1.8rem Quicksand;letter-spacing:.1em;flex:none}
-form{display:grid;gap:14px}
-label{font-size:.8rem;letter-spacing:.08em;color:var(--m);display:grid;gap:6px}
-input,select,textarea{font:inherit;color:var(--t);background:#fff;border:1px solid var(--line);border-radius:2px;padding:12px 14px}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--o)}
-footer{border-top:1px solid var(--line);padding:70px 0 50px;text-align:center}
-footer img{width:200px;height:auto;margin-bottom:22px}
-footer p{color:var(--m);font-size:.9rem}
-.reveal{opacity:0;transform:translateY(18px);transition:opacity .8s,transform .8s}
-.reveal.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}.flow{animation:none}html{scroll-behavior:auto}}
-@media (max-width:960px){nav ul{display:none}.g3,.g4{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}.steps{grid-template-columns:1fr;gap:14px}.steps:before{left:22px;right:auto;top:0;bottom:0;width:1px;height:auto}.step{display:flex;align-items:center;gap:16px;text-align:left}.step b{margin:0}.road{grid-template-columns:1fr;border-top:none;border-left:1px solid var(--o);padding:0 0 0 26px}.road div:before{top:8px;left:-32px}}
-@media (max-width:620px){.g2,.g3,.g4{grid-template-columns:1fr}section{padding:80px 0}}
-</style>
+<link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>
 <nav aria-label="Main"><div class="wrap">
 <a href="#top" aria-label="FINURA AI home"><img src="assets/logo-wordmark.png" alt="FINURA AI"></a>
-<ul><li><a href="#problem">Problem</a></li><li><a href="#engine">Engine</a></li><li><a href="#alpha-triad">Alpha Triad</a></li><li><a href="#proof">Proof</a></li><li><a href="#banks">Banks</a></li><li><a href="#roadmap">Roadmap</a></li><li><a href="#contact">Contact</a></li></ul>
-<a class="btn p" href="#contact">Request a demo</a>
+<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">Menu</button>
+<div class="nav-panel" id="nav-panel">
+<ul>
+<li><a href="demo/">Live demo</a></li>
+<li><a href="#problem">Problem</a></li>
+<li><a href="#engine">Engine</a></li>
+<li><a href="#proof">Proof</a></li>
+<li><a href="#traction">Traction</a></li>
+<li><a href="enterprise/security.html">Enterprise</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+</div>
+<a class="btn p" href="demo/">Try live demo</a>
 </div></nav>
 <main id="top">
 <section class="hero">
@@ -113,7 +45,7 @@ footer p{color:var(--m);font-size:.9rem}
 <div><span class="eyebrow">Neuro-symbolic cognitive infrastructure</span></div>
 <h1>Intelligence proposes.<br><span>Finura decides.</span></h1>
 <p class="lead">FINURA AI is the cognitive engine for trustworthy autonomous AI — the governance layer between the model and your systems. Our neuro-symbolic engine and Alpha Triad make AI agents reason, check themselves and stay accountable, starting with banks.</p>
-<div class="ctas"><a class="btn p" href="#contact">Request a demo</a><a class="btn s" href="#governed-run">See how it works</a></div>
+<div class="ctas"><a class="btn p" href="demo/">Try live demo</a><a class="btn s" href="#governed-run">See how it works</a></div>
 </div></section>
 
 <section id="problem" class="alt"><div class="wrap reveal">
@@ -189,7 +121,9 @@ footer p{color:var(--m);font-size:.9rem}
 <div class="card"><h3>Tamper-evident audit</h3><p class="muted">Every decision is recorded and the audit trail is verified.</p></div>
 <div class="card"><h3>Governed plan reuse</h3><p class="muted">Approved plans are reused safely via a semantic cache.</p></div>
 <div class="card"><h3>Cognitive security</h3><p class="muted">Untrusted text can inform the model, never grant authority.</p></div>
-</div></div></section>
+</div>
+<p style="margin-top:36px"><a class="btn p" href="demo/">Run the live refund demo</a></p>
+</div></section>
 
 <section id="proof"><div class="wrap reveal">
 <span class="eyebrow">Proof</span>
@@ -201,7 +135,18 @@ footer p{color:var(--m);font-size:.9rem}
 <div><div class="stat">Next</div><p class="muted">Seeking our first bank pilot</p></div>
 </div></div></section>
 
-<section id="banks" class="alt"><div class="wrap reveal">
+<section id="traction" class="alt"><div class="wrap reveal">
+<span class="eyebrow">Traction</span>
+<h2>Early signals</h2>
+<p class="lead">Placeholders for Ashish to fill — no invented metrics or partner logos.</p>
+<div class="grid g3" style="margin-top:36px">
+<div class="placeholder-box"><strong>Placeholder · pilots</strong>Bank / NBFCs in conversation — replace with real count when ready.</div>
+<div class="placeholder-box"><strong>Placeholder · logos</strong>Partner / design-partner marks go here (permissioned only).</div>
+<div class="placeholder-box"><strong>Placeholder · milestones</strong>Demo API live in Mumbai · site live demo · first governed workflow — update dates/status.</div>
+</div>
+</div></section>
+
+<section id="banks"><div class="wrap reveal">
 <span class="eyebrow">Beachhead</span>
 <h2>Built for banks first</h2>
 <p class="lead">Governed AI agents that check policy, decide, and record — so banks can put autonomy into production.</p>
@@ -214,7 +159,7 @@ footer p{color:var(--m);font-size:.9rem}
 <div class="card"><div class="stat">$328.8B</div><p>The AI-in-banking market by 2033, which governance sits within.</p><p class="src">Source: <a href="https://www.grandviewresearch.com/industry-analysis/artificial-intelligence-banking-market-report" target="_blank" rel="noopener">Grand View Research, 2026</a></p></div>
 </div></div></section>
 
-<section><div class="wrap reveal">
+<section class="alt"><div class="wrap reveal">
 <span class="eyebrow">Expansion</span>
 <h2>One engine, many industries</h2>
 <div class="grid g4" style="margin-top:40px">
@@ -226,7 +171,7 @@ footer p{color:var(--m);font-size:.9rem}
 <p class="closing">Banks are the beachhead. The engine is reusable everywhere decisions must be trusted.</p>
 </div></section>
 
-<section class="alt"><div class="wrap reveal">
+<section><div class="wrap reveal">
 <span class="eyebrow">Research</span>
 <h2>FINURA Labs</h2>
 <p class="lead">Research first, products second.</p>
@@ -239,7 +184,7 @@ footer p{color:var(--m);font-size:.9rem}
 <div class="card"><span class="k">06</span><h3>Explainable decision architectures</h3></div>
 </div></div></section>
 
-<section id="roadmap"><div class="wrap reveal">
+<section id="roadmap" class="alt"><div class="wrap reveal">
 <span class="eyebrow">Roadmap</span>
 <h2>From first pilot to cognitive networks</h2>
 <div class="road">
@@ -250,10 +195,21 @@ footer p{color:var(--m);font-size:.9rem}
 <div><h3>2030+</h3><p class="muted">Global cognitive networks</p></div>
 </div></div></section>
 
-<section class="alt"><div class="wrap reveal">
+<section><div class="wrap reveal">
 <span class="eyebrow">Team</span>
 <h2>Leadership</h2>
 <div class="team" style="margin-top:30px"><div class="mono" aria-hidden="true">AT</div><div><h3>Ashish Tatikunta</h3><p class="muted">Founder &amp; CEO</p></div></div>
+</div></section>
+
+<section id="enterprise-links" class="alt"><div class="wrap reveal">
+<span class="eyebrow">Enterprise</span>
+<h2>Built for production conversations</h2>
+<div class="grid g3" style="margin-top:36px">
+<div class="card"><span class="k">Security</span><p class="muted">Scoped tokens, demo isolation, audit.</p><p style="margin-top:14px"><a href="enterprise/security.html">Security &amp; governance →</a></p></div>
+<div class="card"><span class="k">Residency</span><p class="muted">Cloud Run asia-south1 (Mumbai).</p><p style="margin-top:14px"><a href="enterprise/india-residency.html">India data residency →</a></p></div>
+<div class="card"><span class="k">Deploy</span><p class="muted">Shared demo → managed pilot → private.</p><p style="margin-top:14px"><a href="enterprise/deployment.html">Deployment options →</a></p></div>
+</div>
+<p style="margin-top:28px"><a href="enterprise/architecture.html">Architecture</a> · <a href="enterprise/pricing.html">Pricing (contact sales)</a></p>
 </div></section>
 
 <section id="contact"><div class="wrap reveal split">
@@ -263,30 +219,39 @@ footer p{color:var(--m);font-size:.9rem}
 <p class="lead" style="margin-bottom:24px"><strong>Banks:</strong> bring one workflow; we'll show it running with policy checks, human approval and a verifiable audit trail.</p>
 <p class="lead"><strong>Investors:</strong> we're raising our pre-seed round. Let's talk.</p>
 </div>
-<form id="cf" novalidate>
+<form id="lead-form" novalidate>
 <label>Name<input name="name" required autocomplete="name"></label>
-<label>Organisation<input name="org" autocomplete="organization"></label>
-<label>Email<input name="email" type="email" required autocomplete="email"></label>
-<label>I am a<select name="role"><option>Bank</option><option>Investor</option><option>Other</option></select></label>
-<label>Message<textarea name="msg" rows="4"></textarea></label>
-<button class="btn p" type="submit">Request a demo</button>
-<p class="src">Opens your email app with your message ready to send.</p>
+<label>Company<input name="company" autocomplete="organization"></label>
+<label>Work email<input name="email" type="email" required autocomplete="email"></label>
+<label>I am a<select name="role"><option value="bank">Bank</option><option value="investor">Investor</option><option value="other">Other</option></select></label>
+<label>Use case / message<textarea name="use_case" rows="4"></textarea></label>
+<label class="check"><input name="consent" type="checkbox" required> I agree to be contacted about FINURA.</label>
+<button class="btn p" type="submit">Request a pilot</button>
+<p id="lead-status" class="form-status" role="status" aria-live="polite"></p>
+<div id="lead-success" class="closing" hidden>Thanks — we received your request via the demo leads API.</div>
+<p class="src">Submits to <code>POST /demo/leads</code> on the Mumbai API (not mailto).</p>
 </form>
 </div></section>
 </main>
 <footer><div class="wrap">
 <img src="assets/logo-stacked.png" alt="FINURA AI">
 <p style="font:300 1.2rem Quicksand;letter-spacing:.08em;color:var(--t);margin-bottom:10px">Intelligence proposes. Finura decides.</p>
+<div class="foot-links">
+<a href="demo/">Live demo</a>
+<a href="enterprise/security.html">Security</a>
+<a href="enterprise/india-residency.html">India residency</a>
+<a href="enterprise/architecture.html">Architecture</a>
+<a href="enterprise/deployment.html">Deployment</a>
+<a href="enterprise/pricing.html">Pricing</a>
+<a href="enterprise/contact.html">Contact</a>
+</div>
 <p>FINURA AI Private Limited</p>
 <p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
 </div></footer>
-<script>
-const CONTACT_EMAIL = 'finura@finuraai.org';
-document.getElementById('cf').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.target);
-const s=`FINURA demo request — ${f.get('role')} — ${f.get('org')||f.get('name')}`;
-const b=`Name: ${f.get('name')}\nOrganisation: ${f.get('org')}\nEmail: ${f.get('email')}\nI am a: ${f.get('role')}\n\n${f.get('msg')}`;
-location.href=`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(b)}`;});
-const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.08});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-</script>
-</body></html>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/demo-api.js"></script>
+<script src="assets/js/demo-samples.js"></script>
+<script src="assets/js/demo-app.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

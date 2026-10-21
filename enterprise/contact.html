@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contact — FINURA AI</title>
+<meta name="description" content="Contact FINURA AI for a governed bank pilot. Pilot requests post to the Mumbai demo leads API.">
+<link rel="canonical" href="https://finuraai.org/enterprise/contact.html">
+<meta name="theme-color" content="#B75419">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<nav aria-label="Main"><div class="wrap">
+<a href="/" aria-label="FINURA AI home"><img src="/assets/logo-wordmark.png" alt="FINURA AI"></a>
+<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">Menu</button>
+<div class="nav-panel" id="nav-panel">
+<ul>
+<li><a href="/demo/">Live demo</a></li>
+<li><a href="/enterprise/security.html">Security</a></li>
+<li><a href="/enterprise/architecture.html">Architecture</a></li>
+<li><a href="/enterprise/pricing.html">Pricing</a></li>
+<li><a href="/enterprise/contact.html" aria-current="page">Contact</a></li>
+</ul>
+</div>
+<a class="btn p" href="/demo/">Live demo</a>
+</div></nav>
+<main>
+<section class="page-hero"><div class="wrap wrap-narrow">
+<span class="eyebrow">Contact</span>
+<h1>Partner on the first governed bank pilot</h1>
+<p class="lead">Banks: bring one workflow. Investors: we're raising pre-seed. Submissions go to <code>POST /demo/leads</code>.</p>
+</div></section>
+<section class="alt"><div class="wrap wrap-narrow">
+<form id="lead-form" novalidate>
+<div class="form-row">
+<label>Name<input name="name" required autocomplete="name"></label>
+<label>Work email<input name="email" type="email" required autocomplete="email"></label>
+</div>
+<div class="form-row">
+<label>Company<input name="company" autocomplete="organization"></label>
+<label>Role<select name="role"><option value="bank">Bank</option><option value="investor">Investor</option><option value="risk">Risk / fraud</option><option value="compliance">Compliance</option><option value="other">Other</option></select></label>
+</div>
+<label>Use case / message<textarea name="use_case" rows="4"></textarea></label>
+<label class="check"><input name="consent" type="checkbox" required> I agree to be contacted about FINURA.</label>
+<button class="btn p" type="submit">Send</button>
+<p id="lead-status" class="form-status" role="status" aria-live="polite"></p>
+<div id="lead-success" class="closing" hidden>Thanks — we received your message.</div>
+</form>
+<p class="src" style="margin-top:20px">Or email <a href="mailto:finura@finuraai.org">finura@finuraai.org</a>.</p>
+</div></section>
+</main>
+<footer><div class="wrap">
+<img src="/assets/logo-stacked.png" alt="FINURA AI">
+<div class="foot-links">
+<a href="/demo/">Live demo</a>
+<a href="/enterprise/security.html">Security</a>
+<a href="/enterprise/india-residency.html">India residency</a>
+<a href="/enterprise/architecture.html">Architecture</a>
+<a href="/enterprise/deployment.html">Deployment</a>
+<a href="/enterprise/pricing.html">Pricing</a>
+</div>
+<p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
+</div></footer>
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/demo-api.js"></script>
+<script src="/assets/js/demo-samples.js"></script>
+<script src="/assets/js/demo-app.js"></script>
+<script src="/assets/js/site.js"></script>
+</body>
+</html>

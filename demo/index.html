@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Live demo — FINURA AI</title>
+<meta name="description" content="Live FINURA ECRP demo: governed refund decisions with SHAP explanations, policy browser, and agentic goal runs — wired to the Mumbai demo API.">
+<link rel="canonical" href="https://finuraai.org/demo/">
+<meta name="theme-color" content="#B75419">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<nav aria-label="Main"><div class="wrap">
+<a href="/" aria-label="FINURA AI home"><img src="/assets/logo-wordmark.png" alt="FINURA AI"></a>
+<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">Menu</button>
+<div class="nav-panel" id="nav-panel">
+<ul>
+<li><a href="/demo/" aria-current="page">Live demo</a></li>
+<li><a href="/enterprise/security.html">Security</a></li>
+<li><a href="/enterprise/architecture.html">Architecture</a></li>
+<li><a href="/enterprise/pricing.html">Pricing</a></li>
+<li><a href="/#contact">Contact</a></li>
+</ul>
+</div>
+<a class="btn p" href="/#contact">Request a pilot</a>
+</div></nav>
+
+<main>
+<section class="page-hero"><div class="wrap">
+<span class="eyebrow">Live product demo</span>
+<h1>Governed decisions you can inspect</h1>
+<p class="lead">Refund decisions with RBI/FINURA citations, <code>refund_risk_v1</code> SHAP bars, policy browser, and an agentic goal run — calling only <code>/demo/*</code> on the Mumbai API. Isolated demo tenant; no pilot data.</p>
+<p style="margin-top:18px"><span id="api-status" class="badge">Checking API…</span></p>
+</div></section>
+
+<section class="alt" style="padding-top:0"><div class="wrap">
+<div class="tabs" role="tablist" aria-label="Demo surfaces">
+<button type="button" role="tab" id="tab-refund" aria-controls="panel-refund" aria-selected="true">Refund decision</button>
+<button type="button" role="tab" id="tab-policy" aria-controls="panel-policy" aria-selected="false">Policy browser</button>
+<button type="button" role="tab" id="tab-goal" aria-controls="panel-goal" aria-selected="false">Goal run</button>
+</div>
+
+<div class="panel" role="tabpanel" id="panel-refund" aria-labelledby="tab-refund">
+<h2>Card / UPI refund decision</h2>
+<p class="muted">Sample presets in INR. Submit posts to <code>POST /demo/refunds</code>. Demo never executes settlement.</p>
+<div class="preset-row" id="refund-presets" aria-label="Sample scenarios"></div>
+<form id="refund-form" class="grid" style="margin-top:18px;max-width:640px" novalidate>
+<label>Transaction ID<input name="transaction_id" required autocomplete="off"></label>
+<label>Amount (INR)<input name="amount_inr" type="number" min="1" step="1" required></label>
+<label>Evidence refs (comma-separated)<input name="evidence" placeholder="dispute_form:…, sms_alert:…"></label>
+<label>Refund reason<input name="reason" placeholder="unauthorised_card_present"></label>
+<button class="btn p" type="submit">Run decision</button>
+<p id="refund-status" class="form-status" role="status" aria-live="polite"></p>
+</form>
+<div id="refund-result" class="card static" style="margin-top:28px" hidden></div>
+</div>
+
+<div class="panel" role="tabpanel" id="panel-policy" aria-labelledby="tab-policy" hidden>
+<h2>Policy browser</h2>
+<p class="muted">Read-only policies from <code>GET /demo/policies</code> (demo tenant).</p>
+<p id="policy-status" style="margin:14px 0"></p>
+<div class="policy-list" id="policy-list"></div>
+</div>
+
+<div class="panel" role="tabpanel" id="panel-goal" aria-labelledby="tab-goal" hidden>
+<h2>Agentic goal run</h2>
+<p class="muted">Streams plan / reason / reflect steps from <code>POST /demo/goals</code>. If Gemini is unavailable, the API (or this page) shows a labelled sample run.</p>
+<form id="goal-form" style="max-width:640px;margin-top:18px">
+<label>Goal<input name="goal_title" required value="Assess card dispute and propose governed refund"></label>
+<button class="btn p" type="submit">Run goal</button>
+<p id="goal-status" class="form-status" role="status" aria-live="polite"></p>
+</form>
+<p id="goal-badge" style="margin:16px 0"></p>
+<div class="timeline" id="goal-timeline" aria-live="polite"></div>
+</div>
+</div></section>
+
+<section><div class="wrap wrap-narrow">
+<span class="eyebrow">Pilot</span>
+<h2>Request a bank pilot</h2>
+<p class="lead">Posts to <code>POST /demo/leads</code> — no mailto. Rate-limited on the API.</p>
+<form id="lead-form" style="margin-top:28px;max-width:560px" novalidate>
+<div class="form-row">
+<label>Name<input name="name" required autocomplete="name"></label>
+<label>Work email<input name="email" type="email" required autocomplete="email"></label>
+</div>
+<div class="form-row">
+<label>Company<input name="company" autocomplete="organization"></label>
+<label>Role<select name="role"><option value="risk">Risk / fraud</option><option value="compliance">Compliance</option><option value="product">Product</option><option value="engineering">Engineering</option><option value="executive">Executive</option><option value="other">Other</option></select></label>
+</div>
+<label>Use case<textarea name="use_case" rows="4" placeholder="e.g. card dispute refunds with human approval"></textarea></label>
+<label class="check"><input name="consent" type="checkbox" required> I agree to be contacted about a FINURA pilot. Demo leads are stored in an isolated demo tenant.</label>
+<button class="btn p" type="submit">Submit pilot request</button>
+<p id="lead-status" class="form-status" role="status" aria-live="polite"></p>
+<div id="lead-success" class="closing" hidden>Received. We'll follow up at your work email.</div>
+</form>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+<img src="/assets/logo-stacked.png" alt="FINURA AI">
+<p style="font:300 1.2rem Quicksand;letter-spacing:.08em;color:var(--t);margin-bottom:10px">Intelligence proposes. Finura decides.</p>
+<div class="foot-links">
+<a href="/demo/">Live demo</a>
+<a href="/enterprise/security.html">Security</a>
+<a href="/enterprise/india-residency.html">India residency</a>
+<a href="/enterprise/architecture.html">Architecture</a>
+<a href="/enterprise/deployment.html">Deployment</a>
+<a href="/enterprise/pricing.html">Pricing</a>
+</div>
+<p>FINURA AI Private Limited</p>
+<p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
+</div></footer>
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/demo-api.js"></script>
+<script src="/assets/js/demo-samples.js"></script>
+<script src="/assets/js/demo-app.js"></script>
+<script src="/assets/js/site.js"></script>
+</body>
+</html>

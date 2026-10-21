@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Architecture — FINURA AI</title>
+<meta name="description" content="FINURA ECRP architecture: neuro-symbolic engine, Alpha Triad, ten-stage cognitive pipeline, ML risk scoring with SHAP, India Cloud Run path.">
+<link rel="canonical" href="https://finuraai.org/enterprise/architecture.html">
+<meta name="theme-color" content="#B75419">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<nav aria-label="Main"><div class="wrap">
+<a href="/" aria-label="FINURA AI home"><img src="/assets/logo-wordmark.png" alt="FINURA AI"></a>
+<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">Menu</button>
+<div class="nav-panel" id="nav-panel">
+<ul>
+<li><a href="/demo/">Live demo</a></li>
+<li><a href="/enterprise/security.html">Security</a></li>
+<li><a href="/enterprise/architecture.html" aria-current="page">Architecture</a></li>
+<li><a href="/enterprise/pricing.html">Pricing</a></li>
+<li><a href="/#contact">Contact</a></li>
+</ul>
+</div>
+<a class="btn p" href="/demo/">Try live demo</a>
+</div></nav>
+<main>
+<section class="page-hero"><div class="wrap wrap-narrow">
+<span class="eyebrow">Enterprise</span>
+<h1>Architecture</h1>
+<p class="lead">Enterprise Cognitive Runtime Platform (ECRP): models propose; FINURA plans, reasons, validates, and records — with optional ML risk scoring and SHAP explanations on financial decisions.</p>
+</div></section>
+<section class="alt"><div class="wrap">
+<span class="eyebrow">Cognitive pipeline</span>
+<h2>Ten governed stages</h2>
+<div class="steps" style="margin-top:36px">
+<div class="step"><b>01</b><span>Perceive</span></div><div class="step"><b>02</b><span>Interpret</span></div><div class="step"><b>03</b><span>Contextualize</span></div><div class="step"><b>04</b><span>Plan</span></div><div class="step"><b>05</b><span>Reason</span></div><div class="step"><b>06</b><span>Validate</span></div><div class="step"><b>07</b><span>Execute</span></div><div class="step"><b>08</b><span>Observe</span></div><div class="step"><b>09</b><span>Reflect</span></div><div class="step"><b>10</b><span>Learn</span></div>
+</div>
+<div class="grid g3" style="margin-top:20px">
+<div class="card static"><span class="k">Alpha Triad</span><h3>Planner · Executor · Critic</h3><p class="muted">Closed loop with policy pause and human-in-the-loop when risk is high.</p></div>
+<div class="card static"><span class="k">Financial decisions</span><h3>Refund runtime</h3><p class="muted"><code>/v1/financial-decisions</code> for pilots; public browsers use <code>/demo/refunds</code> only.</p></div>
+<div class="card static"><span class="k">ML risk</span><h3>refund_risk_v1 + SHAP</h3><p class="muted">Feature-flagged scoring with explainability bars. Demo marks synthetic / illustrative models clearly.</p></div>
+</div>
+</div></section>
+<section><div class="wrap">
+<span class="eyebrow">Reference</span>
+<h2>From the ECRP architecture doc</h2>
+<p class="lead">Canonical detail lives in the ECRP repo: <code>docs/architecture/ai-ml-architecture.md</code> (agentic core, ML risk, feature flags, Cloud Run path). This page is the public summary for enterprise buyers.</p>
+<div class="grid g2" style="margin-top:36px">
+<div class="card static"><span class="k">Agentic core</span><p class="muted">LangGraph-style stage orchestration behind flags; LiteLLM / Gemini for generation; LlamaIndex + pgvector hooks for retrieval — all fail closed when flags are off.</p></div>
+<div class="card static"><span class="k">Control plane</span><p class="muted">Scoped bearer tokens, CORS allow-list, rate limits, optional Turnstile, and production docs hiding when <code>FINURA_ENV=production</code>.</p></div>
+</div>
+<p style="margin-top:36px"><a class="btn p" href="/demo/">See it in the live demo</a> <a class="btn s" href="/enterprise/deployment.html">Deployment</a></p>
+</div></section>
+</main>
+<footer><div class="wrap">
+<img src="/assets/logo-stacked.png" alt="FINURA AI">
+<div class="foot-links">
+<a href="/demo/">Live demo</a>
+<a href="/enterprise/security.html">Security</a>
+<a href="/enterprise/india-residency.html">India residency</a>
+<a href="/enterprise/architecture.html">Architecture</a>
+<a href="/enterprise/deployment.html">Deployment</a>
+<a href="/enterprise/pricing.html">Pricing</a>
+</div>
+<p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
+</div></footer>
+<script src="/assets/js/site.js"></script>
+</body>
+</html>

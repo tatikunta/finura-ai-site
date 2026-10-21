@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Security &amp; governance — FINURA AI</title>
+<meta name="description" content="FINURA security and governance: policy gates, human approval, tamper-evident audit, scoped tokens, and demo isolation.">
+<link rel="canonical" href="https://finuraai.org/enterprise/security.html">
+<meta name="theme-color" content="#B75419">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<nav aria-label="Main"><div class="wrap">
+<a href="/" aria-label="FINURA AI home"><img src="/assets/logo-wordmark.png" alt="FINURA AI"></a>
+<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">Menu</button>
+<div class="nav-panel" id="nav-panel">
+<ul>
+<li><a href="/demo/">Live demo</a></li>
+<li><a href="/enterprise/security.html" aria-current="page">Security</a></li>
+<li><a href="/enterprise/architecture.html">Architecture</a></li>
+<li><a href="/enterprise/pricing.html">Pricing</a></li>
+<li><a href="/#contact">Contact</a></li>
+</ul>
+</div>
+<a class="btn p" href="/demo/">Try live demo</a>
+</div></nav>
+<main>
+<section class="page-hero"><div class="wrap wrap-narrow">
+<span class="eyebrow">Enterprise</span>
+<h1>Security &amp; governance</h1>
+<p class="lead">FINURA sits between models and bank systems so agents can propose — and only governed actions proceed.</p>
+</div></section>
+<section class="alt"><div class="wrap">
+<div class="grid g2">
+<div class="card static"><span class="k">Authority</span><h3>Model output never authorises</h3><p class="muted">Proposals inform the runtime. Policy gates, ActionGate, and optional human approval decide what may execute.</p></div>
+<div class="card static"><span class="k">Audit</span><h3>Tamper-evident trail</h3><p class="muted">Every decision records policy version, evidence refs, risk score, and outcome for replay and verification.</p></div>
+<div class="card static"><span class="k">Tokens</span><h3>Scoped API access</h3><p class="muted">Pilot tokens stay full-scope. Demo tokens (PR A) are limited to read policies, submit/get refund decisions, and run goals — no execute, recall, delete, audit admin.</p></div>
+<div class="card static"><span class="k">Demo isolation</span><h3>Separate demo tenant</h3><p class="muted">Public <code>/demo/*</code> routes write only to an isolated demo schema, rate-limited per IP. Pilot data is never mixed.</p></div>
+</div>
+</div></section>
+<section><div class="wrap wrap-narrow">
+<h2>What the public site never holds</h2>
+<p class="lead">GitHub Pages has no secrets store. The static site never embeds API tokens. Demo calls use public <code>/demo/*</code> routes or a short-lived token minted by <code>GET /demo/bootstrap</code> on the API (configured by operators — not committed to this repo).</p>
+<p style="margin-top:28px"><a class="btn p" href="/demo/">Open live demo</a> <a class="btn s" href="/enterprise/india-residency.html">India data residency</a></p>
+</div></section>
+</main>
+<footer><div class="wrap">
+<img src="/assets/logo-stacked.png" alt="FINURA AI">
+<div class="foot-links">
+<a href="/demo/">Live demo</a>
+<a href="/enterprise/security.html">Security</a>
+<a href="/enterprise/india-residency.html">India residency</a>
+<a href="/enterprise/architecture.html">Architecture</a>
+<a href="/enterprise/deployment.html">Deployment</a>
+<a href="/enterprise/pricing.html">Pricing</a>
+</div>
+<p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
+</div></footer>
+<script src="/assets/js/site.js"></script>
+</body>
+</html>
