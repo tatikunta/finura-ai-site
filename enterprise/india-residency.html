@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>India data residency — FINURA AI</title>
+<meta name="description" content="FINURA ECRP demo and production path on Google Cloud Run asia-south1 (Mumbai) for India data residency.">
+<link rel="canonical" href="https://finuraai.org/enterprise/india-residency.html">
+<meta name="theme-color" content="#B75419">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<nav aria-label="Main"><div class="wrap">
+<a href="/" aria-label="FINURA AI home"><img src="/assets/logo-wordmark.png" alt="FINURA AI"></a>
+<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">Menu</button>
+<div class="nav-panel" id="nav-panel">
+<ul>
+<li><a href="/demo/">Live demo</a></li>
+<li><a href="/enterprise/security.html">Security</a></li>
+<li><a href="/enterprise/architecture.html">Architecture</a></li>
+<li><a href="/enterprise/pricing.html">Pricing</a></li>
+<li><a href="/#contact">Contact</a></li>
+</ul>
+</div>
+<a class="btn p" href="/demo/">Try live demo</a>
+</div></nav>
+<main>
+<section class="page-hero"><div class="wrap wrap-narrow">
+<span class="eyebrow">Enterprise</span>
+<h1>India data residency</h1>
+<p class="lead">Live demo API runs on Google Cloud Run in <strong>asia-south1 (Mumbai)</strong> so bank pilots can start with an India-resident control plane.</p>
+</div></section>
+<section class="alt"><div class="wrap">
+<div class="grid g3">
+<div class="card static"><span class="k">Region</span><h3>asia-south1</h3><p class="muted">Mumbai Cloud Run service for the public demo surface and pilot workloads.</p></div>
+<div class="card static"><span class="k">Site</span><h3>finuraai.org</h3><p class="muted">Static marketing + demo UI on GitHub Pages; browser calls only Mumbai <code>/demo/*</code>.</p></div>
+<div class="card static"><span class="k">Tenant</span><h3>Demo isolation</h3><p class="muted">Public demo writes stay in a tagged demo tenant/schema — never pilot production data.</p></div>
+</div>
+<p class="closing">API base used by this site: <code>https://finura-api-245877296154.asia-south1.run.app</code> (configured in <code>assets/js/config.js</code>).</p>
+</div></section>
+<section><div class="wrap wrap-narrow">
+<h2>What banks should expect</h2>
+<p class="muted">Production residency, VPC, CMEK, and private connectivity are scoped per engagement. Contact sales for deployment options that match your RBI / board requirements.</p>
+<p style="margin-top:28px"><a class="btn p" href="/enterprise/deployment.html">Deployment options</a> <a class="btn s" href="/#contact">Contact</a></p>
+</div></section>
+</main>
+<footer><div class="wrap">
+<img src="/assets/logo-stacked.png" alt="FINURA AI">
+<div class="foot-links">
+<a href="/demo/">Live demo</a>
+<a href="/enterprise/security.html">Security</a>
+<a href="/enterprise/india-residency.html">India residency</a>
+<a href="/enterprise/architecture.html">Architecture</a>
+<a href="/enterprise/deployment.html">Deployment</a>
+<a href="/enterprise/pricing.html">Pricing</a>
+</div>
+<p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
+</div></footer>
+<script src="/assets/js/site.js"></script>
+</body>
+</html>
