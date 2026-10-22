@@ -20,14 +20,16 @@ Never commit API tokens, Firebase Admin keys, or Razorpay secrets. GitHub Pages 
 | Path | Purpose |
 |------|---------|
 | `/demo/` | Public demo → `/demo/*` Mumbai API |
-| `/pricing/` | Self-serve plans (Free / Starter / Business / Enterprise) |
-| `/auth/` | Firebase Google + email (mock when placeholders / localhost) |
+| `/pricing/` | Self-serve plans (INR/USD, FAQ; Free signup + paid waitlist) |
+| `/contact/` | Early access / contact sales form → `POST /demo/leads` |
+| `/auth/` | Firebase Google + email (mock on localhost only) |
 | `/app/` | Account dashboard: overview, keys, usage, billing, team |
 | `/app/playground/` | No-code decision playground |
 | `/docs/` | API quickstart, curl/JS, credits, 402/429 |
+| `/legal/terms/` `/legal/privacy/` `/legal/refund/` | Draft legal pages (pending review) |
 | `/enterprise/*` | Bank / contact-sales packaging |
 
-Dashboard calls `/v1/account/*` with `Authorization: Bearer <Firebase ID token>`. Self-serve backend flags (`FINURA_FF_SELF_SERVE`, `FINURA_FF_BILLING`) default off on Cloud Run — until they ship, use **mock mode** (`?mock=1` or localhost) which implements the PR #8 contract locally.
+Dashboard calls `/v1/account/*` with `Authorization: Bearer <Firebase ID token>`. Until Cloud Run self-serve flags ship, use **mock mode** on localhost / `?mock=1` only (never on production hosts).
 
 ## Live demo → Mumbai API
 
@@ -43,6 +45,7 @@ Browser demo client (`assets/js/demo-api.js`) calls **only** `/demo/*`. See prio
 
 ```bash
 python3 -m http.server 8080
+# open http://localhost:8080/pricing/
 # open http://localhost:8080/auth/?mock=1
 ```
 

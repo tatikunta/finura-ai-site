@@ -130,6 +130,25 @@ footer .foot-links a:hover{color:var(--o)}
 .placeholder-box{border:1px dashed var(--line);padding:22px;background:#fff8;color:var(--m)}
 .placeholder-box strong{display:block;color:var(--t);font:600 .8rem Inter;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.currency-toggle{display:inline-flex;gap:8px;margin-top:28px;flex-wrap:wrap}
+.currency-toggle .chip[aria-pressed="true"]{border-color:var(--o);color:var(--o);background:#fff6f0}
+.pricing-grid{grid-template-columns:repeat(4,1fr);align-items:stretch;margin-top:8px}
+.pricing-card{display:flex;flex-direction:column;height:100%}
+.pricing-card .price{margin:8px 0 12px}
+.pricing-card .price .amount{font:300 clamp(1.8rem,3vw,2.4rem)/1 Quicksand;color:var(--o);letter-spacing:.02em}
+.pricing-card .price .period{font-size:.9rem;color:var(--m)}
+.pricing-card .credit-line{color:var(--t);margin-bottom:18px;font-size:.95rem}
+.pricing-card .feat-list{list-style:none;display:grid;gap:10px;color:var(--m);font-size:.95rem;flex:1}
+.pricing-card .feat-list li{padding-left:18px;position:relative}
+.pricing-card .feat-list li:before{content:"";position:absolute;left:0;top:.55em;width:8px;height:1px;background:var(--o)}
+.pricing-card.featured{border-color:var(--o);background:#fff}
+.pricing-card .btn{width:100%;text-align:center}
+.draft-banner{margin:0 0 28px;padding:16px 18px;border-left:2px solid var(--warn);background:#fff8e8;color:var(--t);font-size:.95rem}
+.legal-prose h2{font-size:1.35rem;margin:36px 0 12px}
+.legal-prose h2:first-child{margin-top:0}
+.legal-prose p,.legal-prose li{color:var(--m);margin-bottom:12px}
+.legal-prose ul{padding-left:1.2rem;margin-bottom:12px}
+.legal-prose li{margin-bottom:8px}
 @media (prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none}.flow{animation:none}.shap-fill{transition:none}html{scroll-behavior:auto}
 }
@@ -138,7 +157,7 @@ footer .foot-links a:hover{color:var(--o)}
   .nav-panel{display:none;position:absolute;top:70px;left:0;right:0;background:rgba(250,247,242,.98);border-bottom:1px solid var(--line);padding:18px 28px 24px}
   nav.open .nav-panel{display:block}
   nav ul{flex-direction:column;align-items:flex-start;gap:14px}
-  .g3,.g4{grid-template-columns:repeat(2,1fr)}
+  .g3,.g4,.pricing-grid{grid-template-columns:repeat(2,1fr)}
   .split,.form-row{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr;gap:14px}
   .steps:before{left:22px;right:auto;top:0;bottom:0;width:1px;height:auto}
@@ -148,7 +167,8 @@ footer .foot-links a:hover{color:var(--o)}
   .kv{grid-template-columns:1fr}
   .shap-row{grid-template-columns:1fr}
 }
-@media (max-width:620px){.g2,.g3,.g4{grid-template-columns:1fr}section{padding:80px 0}.page-hero{padding:56px 0 32px}}
+@media (max-width:620px){.g2,.g3,.g4,.pricing-grid{grid-template-columns:1fr}section{padding:80px 0}.page-hero{padding:56px 0 32px}}
+
 
 /* —— Self-serve app shell —— */
 .app-layout{display:grid;grid-template-columns:220px 1fr;gap:0;min-height:calc(100vh - 70px)}
@@ -210,3 +230,4 @@ table.data tr:last-child td{border-bottom:0}
   .app-main{padding:24px 18px 60px}
   .stat-row{grid-template-columns:1fr}
 }
+
