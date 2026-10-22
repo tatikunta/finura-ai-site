@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Developer docs — FINURA AI</title>
+<meta name="description" content="FINURA AI API quickstart: API keys, curl and JavaScript examples, credits, and error codes 402 / 429.">
+<link rel="canonical" href="https://finuraai.org/docs/">
+<meta name="theme-color" content="#B75419">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<nav aria-label="Main"><div class="wrap">
+<a href="/" aria-label="FINURA AI home"><img src="/assets/logo-wordmark.png" alt="FINURA AI"></a>
+<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">Menu</button>
+<div class="nav-panel" id="nav-panel">
+<ul>
+<li><a href="/demo/">Live demo</a></li>
+<li><a href="/pricing/">Pricing</a></li>
+<li><a href="/docs/" aria-current="page">Docs</a></li>
+<li><a href="/app/">Dashboard</a></li>
+</ul>
+</div>
+<a class="btn p" data-auth-nav href="/auth/">Sign in</a>
+</div></nav>
+
+<main class="docs">
+<section class="page-hero"><div class="wrap wrap-narrow">
+<span class="eyebrow">Developers</span>
+<h1>API quickstart</h1>
+<p class="lead">Authenticate with an API key (<code>fin_sk_…</code>) on metered <code>/v1</code> routes, or use a Firebase ID token on <code>/v1/account/*</code>. No secrets belong in this static site.</p>
+</div></section>
+
+<section class="alt" style="padding-top:0"><div class="wrap wrap-narrow">
+<h2 id="get-a-key">1. Get an API key</h2>
+<p class="muted">Create an account, upgrade to <strong>Starter</strong> or higher, then create a key under Dashboard → API keys. The secret is shown once.</p>
+<pre><code>Authorization: Bearer fin_sk_live_…</code></pre>
+<p class="muted">Dashboard session calls use Firebase instead:</p>
+<pre><code>Authorization: Bearer &lt;Firebase ID token&gt;</code></pre>
+
+<h2 id="base-url">2. Base URL</h2>
+<pre><code id="docs-base">https://finura-api-245877296154.asia-south1.run.app</code></pre>
+
+<h2 id="curl">3. curl — refund decision</h2>
+<p class="muted">Debits <strong>1 credit</strong>. Free / playground-only plans cannot call this with an API key (403).</p>
+<pre><code>curl -sS -X POST "$API_BASE/v1/financial-decisions/refunds" \
+  -H "Authorization: Bearer $FINURA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: $(uuidgen)" \
+  -d '{
+    "transaction_id": "txn_123",
+    "amount": 250000,
+    "currency": "INR",
+    "evidence_refs": ["dispute_form:df_1"],
+    "model_output": { "refund_reason": "unauthorised_upi" }
+  }'</code></pre>
+
+<h2 id="js">4. JavaScript fetch</h2>
+<pre><code>const res = await fetch(`${API_BASE}/v1/financial-decisions/refunds`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${process.env.FINURA_API_KEY}`,
+    "Content-Type": "application/json",
+    "Idempotency-Key": crypto.randomUUID(),
+  },
+  body: JSON.stringify({
+    transaction_id: "txn_123",
+    amount: 250000,
+    currency: "INR",
+    evidence_refs: ["dispute_form:df_1"],
+    model_output: { refund_reason: "unauthorised_upi" },
+  }),
+});
+if (res.status === 402) throw new Error("credits_exhausted");
+if (res.status === 429) throw new Error("quota_exceeded");
+const data = await res.json();</code></pre>
+
+<h2 id="goals">5. Goal runs</h2>
+<p class="muted"><code>POST /v1/goals</code> debits <strong>5 credits</strong> per run when authenticated with a self-serve API key.</p>
+
+<h2 id="credits">Credits</h2>
+<ul class="price-features">
+<li>1 credit = 1 decision evaluation</li>
+<li>1 goal run = 5 credits</li>
+<li>Free: 50 credits/month, playground only, hard-capped</li>
+<li>Starter: 1,000/mo · Business: 7,500/mo · overage configurable</li>
+</ul>
+<p class="muted">Check balance: <code>GET /v1/account/credits</code> (Firebase Bearer) or watch <code>402 credits_exhausted</code> on metered routes.</p>
+
+<h2 id="errors">Errors</h2>
+<pre><code>{ "detail": { "code": "credits_exhausted", "message": "…" } }</code></pre>
+<div class="table-wrap" style="margin:18px 0 40px">
+<table class="data">
+<thead><tr><th>Code</th><th>HTTP</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>credits_exhausted</code></td><td>402</td><td>Hard cap / no remaining credits</td></tr>
+<tr><td><code>quota_exceeded</code></td><td>429</td><td>Rate or quota limit</td></tr>
+<tr><td><code>plan_not_allowed</code></td><td>403</td><td>Feature not on current plan</td></tr>
+<tr><td><code>billing_disabled</code></td><td>503</td><td>Billing flag off</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 id="playground">Playground (no API key)</h2>
+<p class="muted">Signed-in users can run cases in the <a href="/app/playground/">browser playground</a> via <code>POST /v1/account/playground/decisions</code> without creating an API key.</p>
+
+<p class="inline-actions" style="margin-top:36px">
+<a class="btn p" href="/auth/">Create account</a>
+<a class="btn s" href="/pricing/">View pricing</a>
+</p>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+<img src="/assets/logo-stacked.png" alt="FINURA AI">
+<div class="foot-links">
+<a href="/demo/">Live demo</a>
+<a href="/pricing/">Pricing</a>
+<a href="/app/">Dashboard</a>
+<a href="/enterprise/security.html">Security</a>
+</div>
+<p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
+</div></footer>
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/site.js"></script>
+<script src="/assets/js/nav-auth.js"></script>
+<script>
+(function () {
+  var el = document.getElementById("docs-base");
+  if (el && window.FINURA_CONFIG && window.FINURA_CONFIG.API_BASE) {
+    el.textContent = window.FINURA_CONFIG.API_BASE;
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Playground — FINURA AI</title>
+<meta name="description" content="No-code FINURA playground: paste a refund or dispute case, run a governed decision, inspect citations, risk, and SHAP.">
+<link rel="canonical" href="https://finuraai.org/app/playground/">
+<meta name="theme-color" content="#B75419">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<nav aria-label="Main"><div class="wrap">
+<a href="/" aria-label="FINURA AI home"><img src="/assets/logo-wordmark.png" alt="FINURA AI"></a>
+<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">Menu</button>
+<div class="nav-panel" id="nav-panel">
+<ul>
+<li><a href="/app/">Dashboard</a></li>
+<li><a href="/app/playground/" aria-current="page">Playground</a></li>
+<li><a href="/docs/">Docs</a></li>
+<li><a href="/pricing/">Pricing</a></li>
+</ul>
+</div>
+<a class="btn s" href="/app/">Back to dashboard</a>
+</div></nav>
+
+<main>
+<section class="page-hero"><div class="wrap">
+<span class="eyebrow">No-code playground</span>
+<h1>Run a governed decision</h1>
+<p class="lead">Paste a refund or dispute case. Calls <code>POST /v1/account/playground/decisions</code> with your Firebase session — debits 1 credit.</p>
+<p id="pg-credits" class="muted" style="margin-top:12px"></p>
+<p id="pg-mock-banner" class="banner-note" hidden style="margin-top:18px"></p>
+</div></section>
+
+<section class="alt" style="padding-top:0"><div class="wrap">
+<div class="split" style="align-items:start;gap:40px">
+<form id="pg-form" class="grid" style="max-width:560px" novalidate>
+<label>Title<input name="title" value="Playground refund assessment" required></label>
+<label>Action
+<select name="action">
+<option value="assess">Assess</option>
+<option value="approve">Approve</option>
+<option value="deny">Deny</option>
+</select>
+</label>
+<label>Transaction ID<input name="transaction_id" placeholder="txn_…" autocomplete="off"></label>
+<label>Amount (INR major units)<input name="amount_inr" type="number" min="0" step="1" value="2500"></label>
+<label>Case notes / paste<textarea name="notes" rows="5" placeholder="Customer reports unauthorised UPI debit. Evidence: dispute form + SMS alert."></textarea></label>
+<button class="btn p" type="submit">Run decision</button>
+<p id="pg-status" class="form-status" role="status" aria-live="polite"></p>
+</form>
+
+<div id="pg-result" class="card static" hidden></div>
+</div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+<img src="/assets/logo-stacked.png" alt="FINURA AI">
+<div class="foot-links">
+<a href="/app/">Dashboard</a>
+<a href="/docs/">Docs</a>
+<a href="/pricing/">Pricing</a>
+</div>
+<p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
+</div></footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/mock-account.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/account-api.js"></script>
+<script src="/assets/js/site.js"></script>
+<script src="/assets/js/app-playground.js"></script>
+</body>
+</html>

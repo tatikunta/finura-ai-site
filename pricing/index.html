@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pricing — FINURA AI</title>
-<meta name="description" content="FINURA AI pricing: Free, Starter, Business, and Enterprise. Monthly plans with included credits; 1 credit = 1 decision evaluation. Join the waitlist for early access.">
+<meta name="description" content="FINURA AI pricing: Free, Starter, Business, and Enterprise. Monthly plans with included credits; 1 credit = 1 decision evaluation. Free sign-up when enabled; paid plans early access until billing.">
 <link rel="canonical" href="https://finuraai.org/pricing/">
 <meta name="theme-color" content="#B75419">
 <link rel="icon" type="image/png" href="/assets/favicon.png">
@@ -20,18 +20,19 @@
 <ul>
 <li><a href="/demo/">Live demo</a></li>
 <li><a href="/pricing/" aria-current="page">Pricing</a></li>
+<li><a href="/docs/">Docs</a></li>
 <li><a href="/enterprise/security.html">Enterprise</a></li>
 <li><a href="/contact/">Contact</a></li>
 </ul>
 </div>
-<a class="btn p" href="/contact/?plan=starter">Get early access</a>
+<a class="btn p" data-auth-nav href="/auth/">Sign in</a>
 </div></nav>
 
 <main>
 <section class="page-hero"><div class="wrap">
 <span class="eyebrow">Self-serve</span>
 <h1>Pricing</h1>
-<p class="lead">Monthly plans with included credits. Overages are pay-as-you-go. Payments open in a later phase — join the waitlist for early access today.</p>
+<p class="lead">Monthly plans with included credits. Overages are pay-as-you-go. Free accounts can sign up now; paid checkout opens when billing is enabled.</p>
 <div class="currency-toggle" role="group" aria-label="Currency">
 <button type="button" id="currency-inr" class="chip" aria-pressed="true" data-currency="INR">INR (₹)</button>
 <button type="button" id="currency-usd" class="chip" aria-pressed="false" data-currency="USD">USD ($)</button>
@@ -40,6 +41,7 @@
 </div></section>
 
 <section class="alt" style="padding-top:0"><div class="wrap">
+<p id="pricing-mode-banner" class="banner-note" hidden></p>
 <div class="grid pricing-grid" id="pricing-tiers">
 <div class="card static pricing-card" data-tier="free">
 <span class="k">Free</span>
@@ -50,7 +52,7 @@
 <li>1 credit = 1 decision evaluation</li>
 <li>Community support</li>
 </ul>
-<p style="margin-top:22px"><a class="btn s" href="/demo/">Try playground</a></p>
+<p style="margin-top:22px"><a class="btn p" data-plan-cta="free" data-early-href="/contact/?plan=free" data-early-label="Join waitlist" href="/contact/?plan=free">Join waitlist</a></p>
 </div>
 
 <div class="card static pricing-card featured" data-tier="starter">
@@ -62,7 +64,7 @@
 <li>Pay-as-you-go overage</li>
 <li>Email support</li>
 </ul>
-<p style="margin-top:22px"><a class="btn p" href="/contact/?plan=starter">Join waitlist</a></p>
+<p style="margin-top:22px"><a class="btn p" data-plan-cta="starter" data-early-href="/contact/?plan=starter" data-early-label="Join waitlist" href="/contact/?plan=starter">Join waitlist</a></p>
 </div>
 
 <div class="card static pricing-card" data-tier="business">
@@ -75,7 +77,7 @@
 <li>Priority support</li>
 <li>Pay-as-you-go overage</li>
 </ul>
-<p style="margin-top:22px"><a class="btn p" href="/contact/?plan=business">Get early access</a></p>
+<p style="margin-top:22px"><a class="btn p" data-plan-cta="business" data-early-href="/contact/?plan=business" data-early-label="Get early access" href="/contact/?plan=business">Get early access</a></p>
 </div>
 
 <div class="card static pricing-card" data-tier="enterprise">
@@ -88,7 +90,7 @@
 <li>On-prem / VPC option</li>
 <li>RBI-aligned audit and SLAs</li>
 </ul>
-<p style="margin-top:22px"><a class="btn p" href="/contact/?plan=enterprise">Contact sales</a></p>
+<p style="margin-top:22px"><a class="btn p" data-plan-cta="enterprise" data-early-href="/contact/?plan=enterprise" data-enterprise-label="Contact sales" href="/contact/?plan=enterprise">Contact sales</a></p>
 </div>
 </div>
 
@@ -117,7 +119,7 @@
 </button>
 <button type="button" class="policy-item" aria-expanded="false">
 <strong>Can I pay today?</strong>
-<div class="policy-body">Not yet. Self-serve payments ship in a later phase. Use <strong>Join waitlist</strong> or <strong>Get early access</strong> to reserve a plan; Enterprise customers should use <strong>Contact sales</strong>. There is no fake checkout on this site.</div>
+<div class="policy-body">Paid checkout is not open yet (<code>BILLING_ENABLED</code> is off). Free accounts can sign up when self-serve is enabled. Use <strong>Join waitlist</strong> or <strong>Get early access</strong> for paid plans; Enterprise customers should use <strong>Contact sales</strong>.</div>
 </button>
 <button type="button" class="policy-item" aria-expanded="false">
 <strong>Where are the legal policies?</strong>
@@ -128,9 +130,9 @@
 
 <section class="alt"><div class="wrap wrap-narrow" style="text-align:center">
 <span class="eyebrow">Next</span>
-<h2>Ready for early access?</h2>
-<p class="lead" style="margin:16px auto 28px">Tell us your team and preferred plan. We'll follow up when billing opens.</p>
-<a class="btn p" href="/contact/?plan=starter">Join waitlist</a>
+<h2>Ready to start?</h2>
+<p class="lead" style="margin:16px auto 28px">Create a Free account, or join the waitlist for paid plans. We'll follow up when billing opens.</p>
+<a class="btn p" data-plan-cta="free" data-early-href="/contact/?plan=free" data-early-label="Join waitlist" href="/auth/?plan=free">Start free</a>
 <a class="btn s" href="/demo/" style="margin-left:12px">Try live demo</a>
 </div></section>
 </main>
@@ -141,6 +143,7 @@
 <div class="foot-links">
 <a href="/demo/">Live demo</a>
 <a href="/pricing/">Pricing</a>
+<a href="/docs/">Docs</a>
 <a href="/contact/">Contact</a>
 <a href="/enterprise/security.html">Security</a>
 <a href="/legal/terms/">Terms</a>
@@ -150,7 +153,10 @@
 <p>FINURA AI Private Limited</p>
 <p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
 </div></footer>
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/auth.js"></script>
 <script src="/assets/js/site.js"></script>
+<script src="/assets/js/nav-auth.js"></script>
 <script src="/assets/js/pricing.js"></script>
 </body>
 </html>
