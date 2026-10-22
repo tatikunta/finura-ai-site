@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign in — FINURA AI</title>
+<meta name="description" content="Sign in or create a FINURA AI account to use the playground, API keys, and billing.">
+<link rel="canonical" href="https://finuraai.org/auth/">
+<meta name="theme-color" content="#B75419">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<nav aria-label="Main"><div class="wrap">
+<a href="/" aria-label="FINURA AI home"><img src="/assets/logo-wordmark.png" alt="FINURA AI"></a>
+<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">Menu</button>
+<div class="nav-panel" id="nav-panel">
+<ul>
+<li><a href="/demo/">Live demo</a></li>
+<li><a href="/pricing/">Pricing</a></li>
+<li><a href="/docs/">Docs</a></li>
+<li><a href="/#contact">Contact</a></li>
+</ul>
+</div>
+<a class="btn p" data-auth-nav href="/auth/">Sign in</a>
+</div></nav>
+
+<main>
+<section class="page-hero" style="padding-bottom:24px"><div class="wrap wrap-narrow" style="text-align:center">
+<span class="eyebrow">Account</span>
+</div></section>
+<section style="padding-top:0"><div class="wrap">
+<p id="auth-mode-banner" class="banner-note" hidden></p>
+<div class="auth-card">
+<h1 id="auth-title">Sign in</h1>
+<p class="muted">Google or email. Your Firebase ID token authorises <code>/v1/account/*</code> — no API secrets in the browser.</p>
+<p style="margin-top:22px"><button type="button" class="btn google block" id="google-signin">Continue with Google</button></p>
+<div class="auth-divider">or email</div>
+<form id="email-form" novalidate>
+<div id="display-name-field" hidden>
+<label>Name<input name="display_name" autocomplete="name"></label>
+</div>
+<label>Email<input name="email" type="email" required autocomplete="email"></label>
+<label>Password<input name="password" type="password" required minlength="6" autocomplete="current-password"></label>
+<button class="btn p block" type="submit" id="email-submit">Sign in</button>
+<p id="auth-status" class="form-status" role="status" aria-live="polite"></p>
+</form>
+<p style="margin-top:16px;text-align:center"><a href="#" id="auth-mode-toggle">Need an account? Sign up</a></p>
+</div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+<img src="/assets/logo-stacked.png" alt="FINURA AI">
+<div class="foot-links">
+<a href="/demo/">Live demo</a>
+<a href="/pricing/">Pricing</a>
+<a href="/docs/">Docs</a>
+<a href="/enterprise/security.html">Security</a>
+</div>
+<p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
+</div></footer>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/mock-account.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/account-api.js"></script>
+<script src="/assets/js/site.js"></script>
+<script src="/assets/js/nav-auth.js"></script>
+<script src="/assets/js/auth-page.js"></script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard — FINURA AI</title>
+<meta name="description" content="FINURA AI account dashboard: plan, credits, API keys, usage, billing, and team seats.">
+<link rel="canonical" href="https://finuraai.org/app/">
+<meta name="theme-color" content="#B75419">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<nav aria-label="Main"><div class="wrap">
+<a href="/" aria-label="FINURA AI home"><img src="/assets/logo-wordmark.png" alt="FINURA AI"></a>
+<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">Menu</button>
+<div class="nav-panel" id="nav-panel">
+<ul>
+<li><a href="/app/" aria-current="page">Dashboard</a></li>
+<li><a href="/app/playground/">Playground</a></li>
+<li><a href="/docs/">Docs</a></li>
+<li><a href="/pricing/">Pricing</a></li>
+</ul>
+</div>
+<a class="btn s" href="#" id="sign-out-btn">Sign out</a>
+</div></nav>
+
+<div id="gate-loading" class="wrap state-box loading" style="margin:48px auto;max-width:560px">Loading account…</div>
+<div id="gate-error" class="wrap state-box err" style="margin:48px auto;max-width:560px" hidden></div>
+
+<div id="app-root" class="app-layout" hidden>
+<aside class="app-sidebar" aria-label="Account">
+  <p class="side-label">Account</p>
+  <nav class="side-nav">
+    <a href="#overview" data-tab="overview" aria-current="page">Overview</a>
+    <a href="#keys" data-tab="keys">API keys</a>
+    <a href="#usage" data-tab="usage">Usage</a>
+    <a href="#billing" data-tab="billing">Billing</a>
+    <a href="#team" data-tab="team">Team</a>
+    <a href="/app/playground/">Playground</a>
+    <a href="/docs/">Docs</a>
+  </nav>
+</aside>
+<main class="app-main">
+  <div class="app-header">
+    <div>
+      <span class="eyebrow">Console</span>
+      <h1 id="page-title">Overview</h1>
+    </div>
+    <div class="user-chip" id="user-chip"></div>
+  </div>
+  <p id="mock-banner" class="banner-note" hidden></p>
+
+  <section class="app-panel" id="panel-overview" data-panel="overview">
+    <div class="stat-row">
+      <div class="stat-tile"><div class="label">Plan</div><div class="value" id="stat-plan">—</div><div class="hint" id="stat-plan-hint"></div></div>
+      <div class="stat-tile"><div class="label">Credits remaining</div><div class="value" id="stat-credits">—</div><div class="hint" id="stat-credits-hint"></div></div>
+      <div class="stat-tile"><div class="label">Used this month</div><div class="value" id="stat-used">—</div><div class="hint" id="stat-used-hint"></div></div>
+    </div>
+    <div class="chart-wrap">
+      <h3>Usage this month</h3>
+      <p class="muted" style="margin-top:4px">Daily decision credits (mock or live ledger). 1 decision = 1 credit · 1 goal run = 5.</p>
+      <div class="chart-bars" id="usage-chart" aria-label="Daily usage chart" role="img"></div>
+    </div>
+    <p style="margin-top:22px" class="inline-actions">
+      <a class="btn p" href="/app/playground/">Open playground</a>
+      <a class="btn s" href="#billing" data-tab="billing">Manage plan</a>
+    </p>
+  </section>
+
+  <section class="app-panel" id="panel-keys" data-panel="keys" hidden>
+    <p class="muted">Secrets are shown once at creation. Free plan is playground-only — upgrade to Starter+ for API keys.</p>
+    <form id="create-key-form" class="inline-actions" style="margin:18px 0">
+      <label class="sr-only" for="key-name">Key name</label>
+      <input id="key-name" name="name" placeholder="Key name (e.g. prod)" style="max-width:220px">
+      <button class="btn p" type="submit">Create key</button>
+    </form>
+    <p id="keys-status" class="form-status" role="status"></p>
+    <div id="new-secret" class="secret-box" hidden></div>
+    <div class="table-wrap" style="margin-top:16px">
+      <table class="data" id="keys-table">
+        <thead><tr><th>Name</th><th>Prefix</th><th>Created</th><th>Last used</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div id="keys-empty" class="state-box" hidden style="margin-top:16px">No API keys yet.</div>
+  </section>
+
+  <section class="app-panel" id="panel-usage" data-panel="usage" hidden>
+    <p class="muted">Credit ledger for the current billing period.</p>
+    <div class="table-wrap" style="margin-top:16px">
+      <table class="data" id="usage-table">
+        <thead><tr><th>When</th><th>Reason</th><th>Delta</th><th>Balance</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div id="usage-empty" class="state-box" hidden style="margin-top:16px">No usage yet this period.</div>
+  </section>
+
+  <section class="app-panel" id="panel-billing" data-panel="billing" hidden>
+    <div class="stat-row">
+      <div class="stat-tile"><div class="label">Current plan</div><div class="value" id="bill-plan">—</div><div class="hint" id="bill-plan-hint"></div></div>
+      <div class="stat-tile"><div class="label">Subscription</div><div class="value" id="bill-sub" style="font-size:1.4rem">—</div><div class="hint" id="bill-sub-hint"></div></div>
+      <div class="stat-tile"><div class="label">Billing</div><div class="value" id="bill-flag" style="font-size:1.4rem">—</div><div class="hint">Razorpay Checkout when enabled</div></div>
+    </div>
+    <h3 style="margin-top:8px">Change plan</h3>
+    <p class="muted">Upgrade or downgrade. Free activates locally; paid plans open Razorpay when <code>BILLING_ENABLED</code> is on.</p>
+    <div class="inline-actions" id="plan-actions" style="margin:16px 0 28px"></div>
+    <p id="billing-status" class="form-status" role="status"></p>
+    <h3>Invoices</h3>
+    <div class="table-wrap" style="margin-top:12px">
+      <table class="data" id="invoices-table">
+        <thead><tr><th>ID</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div id="invoices-empty" class="state-box" hidden style="margin-top:16px">No invoices yet.</div>
+  </section>
+
+  <section class="app-panel" id="panel-team" data-panel="team" hidden>
+    <p class="muted">Seat count comes from your plan. Business includes 5 seats; invite flows ship with a later release.</p>
+    <div class="stat-row">
+      <div class="stat-tile"><div class="label">Seats</div><div class="value" id="team-seats">—</div><div class="hint" id="team-seats-hint"></div></div>
+      <div class="stat-tile"><div class="label">Account type</div><div class="value" id="team-type" style="font-size:1.4rem">—</div><div class="hint" id="team-account"></div></div>
+      <div class="stat-tile"><div class="label">Tenant</div><div class="value" id="team-tenant" style="font-size:1.1rem;word-break:break-all">—</div><div class="hint">Isolated self-serve tenant</div></div>
+    </div>
+    <div class="placeholder-box" style="margin-top:8px">
+      <strong>Invites</strong>
+      Seat invitations are not in the Phase 2–3 API contract yet. Upgrade to Business for 5 seats; manage members via support until the invite endpoint ships.
+    </div>
+  </section>
+</main>
+</div>
+
+<footer><div class="wrap">
+<img src="/assets/logo-stacked.png" alt="FINURA AI">
+<div class="foot-links">
+<a href="/docs/">Docs</a>
+<a href="/pricing/">Pricing</a>
+<a href="/enterprise/security.html">Security</a>
+</div>
+<p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
+</div></footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/mock-account.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/account-api.js"></script>
+<script src="/assets/js/site.js"></script>
+<script src="/assets/js/app-dashboard.js"></script>
+</body>
+</html>
