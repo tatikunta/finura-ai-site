@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Early access &amp; contact sales — FINURA AI</title>
+<meta name="description" content="Join the FINURA AI waitlist or contact sales for Enterprise. Submissions go to the Mumbai demo leads API — no checkout, no tokens in the browser.">
+<link rel="canonical" href="https://finuraai.org/contact/">
+<meta name="theme-color" content="#B75419">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<nav aria-label="Main"><div class="wrap">
+<a href="/" aria-label="FINURA AI home"><img src="/assets/logo-wordmark.png" alt="FINURA AI"></a>
+<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">Menu</button>
+<div class="nav-panel" id="nav-panel">
+<ul>
+<li><a href="/demo/">Live demo</a></li>
+<li><a href="/pricing/">Pricing</a></li>
+<li><a href="/enterprise/security.html">Enterprise</a></li>
+<li><a href="/contact/" aria-current="page">Contact</a></li>
+</ul>
+</div>
+<a class="btn p" href="/pricing/">View pricing</a>
+</div></nav>
+
+<main>
+<section class="page-hero"><div class="wrap wrap-narrow">
+<span class="eyebrow">Early access</span>
+<h1>Join the waitlist or contact sales</h1>
+<p class="lead">Self-serve payments come in a later phase. Share your details and preferred plan — we store the lead on the same Mumbai <code>POST /demo/leads</code> endpoint used by the demo. No tokens or secrets in this page.</p>
+</div></section>
+
+<section class="alt"><div class="wrap wrap-narrow">
+<form id="lead-form" novalidate>
+<div class="form-row">
+<label>Name<input name="name" required autocomplete="name"></label>
+<label>Work email<input name="email" type="email" required autocomplete="email"></label>
+</div>
+<div class="form-row">
+<label>Company<input name="company" autocomplete="organization"></label>
+<label>Company size
+<select name="company_size">
+<option value="">Select…</option>
+<option value="1-10">1–10</option>
+<option value="11-50">11–50</option>
+<option value="51-200">51–200</option>
+<option value="201-1000">201–1,000</option>
+<option value="1000+">1,000+</option>
+</select>
+</label>
+</div>
+<div class="form-row">
+<label>Plan
+<select name="plan" id="plan-select">
+<option value="free">Free</option>
+<option value="starter">Starter</option>
+<option value="business">Business</option>
+<option value="enterprise">Enterprise — contact sales</option>
+</select>
+</label>
+<label>I am a
+<select name="role">
+<option value="product">Product</option>
+<option value="engineering">Engineering</option>
+<option value="risk">Risk / fraud</option>
+<option value="compliance">Compliance</option>
+<option value="bank">Bank</option>
+<option value="investor">Investor</option>
+<option value="other">Other</option>
+</select>
+</label>
+</div>
+<label>Use case / message<textarea name="use_case" rows="4" placeholder="What workflow or decision path do you want to govern?"></textarea></label>
+<label class="check"><input name="consent" type="checkbox" required> I agree to be contacted about FINURA early access and product updates.</label>
+<button class="btn p" type="submit" id="lead-submit">Join waitlist</button>
+<p id="lead-status" class="form-status" role="status" aria-live="polite"></p>
+<div id="lead-success" class="closing" hidden>Thanks — we received your request. We'll follow up at your work email when early access opens for your plan.</div>
+</form>
+<p class="src" style="margin-top:20px">Prefer email? <a href="mailto:tatikunta.k@gmail.com">tatikunta.k@gmail.com</a> · See <a href="/pricing/">pricing</a>.</p>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+<img src="/assets/logo-stacked.png" alt="FINURA AI">
+<p style="font:300 1.2rem Quicksand;letter-spacing:.08em;color:var(--t);margin-bottom:10px">Intelligence proposes. Finura decides.</p>
+<div class="foot-links">
+<a href="/demo/">Live demo</a>
+<a href="/pricing/">Pricing</a>
+<a href="/contact/">Contact</a>
+<a href="/enterprise/security.html">Security</a>
+<a href="/legal/terms/">Terms</a>
+<a href="/legal/privacy/">Privacy</a>
+<a href="/legal/refund/">Refunds</a>
+</div>
+<p>FINURA AI Private Limited</p>
+<p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
+</div></footer>
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/demo-api.js"></script>
+<script src="/assets/js/demo-samples.js"></script>
+<script src="/assets/js/demo-app.js"></script>
+<script src="/assets/js/site.js"></script>
+<script src="/assets/js/contact.js"></script>
+</body>
+</html>

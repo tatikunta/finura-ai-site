@@ -49,4 +49,14 @@ Edit `assets/js/config.js` → `API_BASE`, commit, merge to `main`. Do not add t
 
 ## Local preview
 
-Any static server from repo root, e.g. `python3 -m http.server 8080`, then open `/` and `/demo/`.
+Any static server from repo root, e.g. `python3 -m http.server 8080`, then open `/`, `/demo/`, `/pricing/`, and `/contact/`.
+
+## Self-serve Phase 1 pages
+
+| Path | Purpose |
+|------|---------|
+| `/pricing/` | Public tiers, INR/USD toggle, credits FAQ (waitlist CTAs — no checkout) |
+| `/contact/` | Early access / contact sales form → `POST /demo/leads` |
+| `/legal/terms/` | Draft Terms of Service (pending legal review) |
+| `/legal/privacy/` | Draft Privacy Policy (pending legal review) |
+| `/legal/refund/` | Draft Refund & Cancellation Policy (pending legal review) |
