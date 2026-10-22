@@ -11,7 +11,23 @@
     return base + path;
   }
 
+  /** Production site hosts — mock API must never activate here. */
+  function isProductionHost() {
+    const h = (location.hostname || "").toLowerCase();
+    return (
+      h === "finuraai.org" ||
+      h === "www.finuraai.org" ||
+      h.endsWith(".finuraai.org")
+    );
+  }
+
   function shouldMock() {
+    if (isProductionHost()) {
+      try {
+        localStorage.removeItem("finura_mock");
+      } catch (_) {}
+      return false;
+    }
     if (cfg().MOCK_MODE) return true;
     try {
       const q = new URLSearchParams(location.search);

@@ -7,13 +7,13 @@ Static marketing + live demo + self-serve console for [finuraai.org](https://fin
 ```js
 // assets/js/config.js
 API_BASE: "https://finura-api-245877296154.asia-south1.run.app"
-SELF_SERVE_ENABLED: false   // pricing CTAs → early access until true
+SELF_SERVE_ENABLED: true    // Free → sign-up; paid stay early-access until billing
 BILLING_ENABLED: false      // Razorpay Checkout gate
-MOCK_MODE: false            // or localhost / ?mock=1 for contract mock
+MOCK_MODE: false            // localhost / ?mock=1 only — never on finuraai.org
 FIREBASE: { apiKey, authDomain, projectId, appId, … }  // public web config
 ```
 
-Never commit API tokens, Firebase Admin keys, or Razorpay secrets. GitHub Pages is public.
+Never commit API tokens, Firebase Admin keys, or Razorpay secrets. GitHub Pages is public. Mock mode is blocked on `finuraai.org` / `www.finuraai.org`.
 
 ## Surfaces
 

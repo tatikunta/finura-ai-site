@@ -9,7 +9,7 @@
  *   browser session. Ashish configures that on Cloud Run; this file stays token-free.
  *
  * Self-serve (Phases 2–4): Firebase ID tokens → Authorization: Bearer on
- * /v1/account/*. Feature flags default OFF until Cloud Run enables the backend.
+ * /v1/account/*. MOCK_MODE / ?mock=1 never apply on finuraai.org production hosts.
  */
 window.FINURA_CONFIG = Object.freeze({
   API_BASE: "https://finura-api-245877296154.asia-south1.run.app",
@@ -20,29 +20,29 @@ window.FINURA_CONFIG = Object.freeze({
   REQUEST_TIMEOUT_MS: 25000,
 
   /**
-   * When false (default), pricing CTAs keep early-access / contact-sales behaviour.
-   * When true, Free → sign-up; paid plans → sign-up then Razorpay checkout.
+   * When true, Free → sign-up. Paid plans stay early-access until BILLING_ENABLED.
+   * When false, all pricing CTAs keep early-access / contact-sales behaviour.
    */
-  SELF_SERVE_ENABLED: false,
-  /** When false, billing UI explains that checkout is not live yet. */
+  SELF_SERVE_ENABLED: true,
+  /** When false, paid plans keep early-access CTAs (no Razorpay Checkout). */
   BILLING_ENABLED: false,
 
   /**
-   * Local / screenshot mock for /v1/account/* when the live self-serve API is
-   * not deployed. Also enabled automatically on localhost, or via ?mock=1.
-   * Never used for real Firebase credentials or payment secrets.
+   * Local / screenshot mock for /v1/account/* (localhost or ?mock=1 only).
+   * Ignored on finuraai.org / www.finuraai.org — production always hits the live API.
    */
   MOCK_MODE: false,
 
   /**
    * Firebase web app config (public client values — not secrets).
-   * Replace placeholders after creating the web app in Firebase Console.
+   * Analytics (measurementId) intentionally omitted — Skip Analytics.
    */
   FIREBASE: Object.freeze({
-    apiKey: "YOUR_FIREBASE_WEB_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    appId: "YOUR_FIREBASE_APP_ID",
-    messagingSenderId: "YOUR_SENDER_ID",
+    apiKey: "AIzaSyBKzOFW9h1D1hHsij5NcgGKOYbJmbm7zUY",
+    authDomain: "finura-ecrp-20f2.firebaseapp.com",
+    projectId: "finura-ecrp-20f2",
+    storageBucket: "finura-ecrp-20f2.firebasestorage.app",
+    messagingSenderId: "245877296154",
+    appId: "1:245877296154:web:7c6feb797bdd82e7b4d5a3",
   }),
 });

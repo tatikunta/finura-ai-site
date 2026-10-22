@@ -18,7 +18,24 @@
     );
   }
 
+  /** Production site hosts — mock auth must never activate here. */
+  function isProductionHost() {
+    const h = (location.hostname || "").toLowerCase();
+    return (
+      h === "finuraai.org" ||
+      h === "www.finuraai.org" ||
+      h.endsWith(".finuraai.org")
+    );
+  }
+
   function useMockAuth() {
+    if (isProductionHost()) {
+      try {
+        localStorage.removeItem("finura_mock");
+        sessionStorage.removeItem("finura_mock_user");
+      } catch (_) {}
+      return false;
+    }
     if (cfg().MOCK_MODE) return true;
     try {
       const q = new URLSearchParams(location.search);

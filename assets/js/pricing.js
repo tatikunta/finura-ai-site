@@ -11,10 +11,17 @@
     const q = new URLSearchParams();
     if (planId) q.set("plan", planId);
     if (planId && planId !== "free" && billing) q.set("checkout", "1");
-    // Preserve mock for local/screenshot flows
+    // Preserve mock for local/screenshot flows only (never on production hosts).
     try {
-      if (new URLSearchParams(location.search).get("mock") === "1") q.set("mock", "1");
-      else if (localStorage.getItem("finura_mock") === "1") q.set("mock", "1");
+      const h = (location.hostname || "").toLowerCase();
+      const prod =
+        h === "finuraai.org" ||
+        h === "www.finuraai.org" ||
+        h.endsWith(".finuraai.org");
+      if (!prod) {
+        if (new URLSearchParams(location.search).get("mock") === "1") q.set("mock", "1");
+        else if (localStorage.getItem("finura_mock") === "1") q.set("mock", "1");
+      }
     } catch (_) {}
     const s = q.toString();
     return "/auth/" + (s ? "?" + s : "");
@@ -43,8 +50,15 @@
       return;
     }
 
+    // Paid plans: checkout only when BILLING_ENABLED; otherwise keep early access.
+    if (!billing) {
+      btn.href = earlyHref;
+      btn.textContent = earlyLabel;
+      return;
+    }
+
     btn.href = authUrl(plan);
-    btn.textContent = billing ? "Start " + (plan.charAt(0).toUpperCase() + plan.slice(1)) : "Sign up";
+    btn.textContent = "Start " + (plan.charAt(0).toUpperCase() + plan.slice(1));
   });
 
   const banner = document.getElementById("pricing-mode-banner");
@@ -56,7 +70,7 @@
     } else if (!billing) {
       banner.hidden = false;
       banner.textContent =
-        "Accounts are open on Free. Paid checkout (Razorpay) enables when BILLING_ENABLED is turned on.";
+        "Free accounts are open. Paid plans stay on early access until BILLING_ENABLED (Razorpay) is turned on.";
     } else {
       banner.hidden = true;
     }

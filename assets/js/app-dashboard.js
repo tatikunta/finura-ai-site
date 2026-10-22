@@ -5,9 +5,16 @@
   const params = new URLSearchParams(location.search);
 
   if (params.get("mock") === "1") {
-    try {
-      localStorage.setItem("finura_mock", "1");
-    } catch (_) {}
+    const h = (location.hostname || "").toLowerCase();
+    const prod =
+      h === "finuraai.org" ||
+      h === "www.finuraai.org" ||
+      h.endsWith(".finuraai.org");
+    if (!prod) {
+      try {
+        localStorage.setItem("finura_mock", "1");
+      } catch (_) {}
+    }
   }
 
   const TITLES = {

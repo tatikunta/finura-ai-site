@@ -13,10 +13,18 @@
   const params = new URLSearchParams(location.search);
   const planIntent = params.get("plan");
   const wantsCheckout = params.get("checkout") === "1";
+  // Mock sticky flag is local/dev only — never persist on finuraai.org.
   if (params.get("mock") === "1") {
-    try {
-      localStorage.setItem("finura_mock", "1");
-    } catch (_) {}
+    const h = (location.hostname || "").toLowerCase();
+    const prod =
+      h === "finuraai.org" ||
+      h === "www.finuraai.org" ||
+      h.endsWith(".finuraai.org");
+    if (!prod) {
+      try {
+        localStorage.setItem("finura_mock", "1");
+      } catch (_) {}
+    }
   }
 
   function setStatus(msg, kind) {
