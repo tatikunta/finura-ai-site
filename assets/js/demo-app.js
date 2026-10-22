@@ -530,14 +530,36 @@
         }
         return;
       }
+      const plan =
+        (leadForm.plan && leadForm.plan.value) ||
+        (leadForm.tier && leadForm.tier.value) ||
+        "";
+      const companySize =
+        (leadForm.company_size && leadForm.company_size.value) || "";
+      let useCase =
+        (leadForm.use_case && leadForm.use_case.value.trim()) || "";
+      // Backend accepts extra fields; also echo plan/size into use_case for older handlers.
+      if (plan || companySize) {
+        const meta = [];
+        if (plan) meta.push("plan=" + plan);
+        if (companySize) meta.push("company_size=" + companySize);
+        useCase = useCase
+          ? useCase + "\n\n[" + meta.join(", ") + "]"
+          : "[" + meta.join(", ") + "]";
+      }
       const payload = {
         name: leadForm.name.value.trim(),
         email: leadForm.email.value.trim(),
         company: (leadForm.company && leadForm.company.value.trim()) || "",
         role: (leadForm.role && leadForm.role.value) || "",
-        use_case: (leadForm.use_case && leadForm.use_case.value.trim()) || "",
+        use_case: useCase,
         consent: true,
       };
+      if (plan) {
+        payload.plan = plan;
+        payload.tier = plan;
+      }
+      if (companySize) payload.company_size = companySize;
       btn.disabled = true;
       if (status) {
         status.textContent = "Sending…";
@@ -548,7 +570,7 @@
         if (res.ok) {
           leadForm.reset();
           if (status) {
-            status.textContent = "Thanks — we received your pilot request.";
+            status.textContent = "Thanks — we received your request.";
             status.className = "form-status ok";
           }
           const success = $("#lead-success");
@@ -556,13 +578,18 @@
         } else if (res.status === 429) {
           throw new Error("Rate limited — try again shortly.");
         } else {
-          throw new Error("HTTP " + res.status);
+          const detail =
+            (res.data && (res.data.detail || res.data.message)) ||
+            "HTTP " + res.status;
+          throw new Error(
+            typeof detail === "string" ? detail : "Request failed (" + res.status + ")."
+          );
         }
       } catch (err) {
         if (status) {
           status.textContent =
             (err && err.message) ||
-            "Could not reach the demo API. Email finura@finuraai.org if this persists.";
+            "Could not reach the demo API. Email tatikunta.k@gmail.com if this persists.";
           status.className = "form-status err";
         }
       } finally {
