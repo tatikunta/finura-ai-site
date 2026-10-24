@@ -34,11 +34,11 @@ window.FINURA_CONFIG = Object.freeze({
   TURNSTILE_SITE_KEY: "",
 
   /**
-   * When true, show Data export / Delete account on /app/ and call
-   * GET /v1/account/export and DELETE /v1/account. Keep false until the
-   * parallel backend PR is live.
+   * When true, show Data export / Delete account on /app/.
+   * Routes (ECRP rev 00009 / PR #17): GET /v1/account/data-export,
+   * DELETE /v1/account with X-Confirm-Delete: DELETE.
    */
-  ACCOUNT_PRIVACY_ENABLED: false,
+  ACCOUNT_PRIVACY_ENABLED: true,
 
   /**
    * Local / screenshot mock for /v1/account/* (localhost or ?mock=1 only).

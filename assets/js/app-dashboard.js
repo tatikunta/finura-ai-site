@@ -518,24 +518,31 @@
     if (deleteBtn && !deleteBtn.dataset.wired) {
       deleteBtn.dataset.wired = "1";
       deleteBtn.addEventListener("click", async function () {
+        // Confirm step 1 — irreversible warning
         const ok = window.confirm(
           "Permanently delete your FINURA account and associated data? This cannot be undone."
         );
-        if (!ok) return;
+        if (!ok) {
+          setPrivacyStatus("Deletion cancelled.");
+          return;
+        }
+        // Confirm step 2 — typed confirmation (matches X-Confirm-Delete: DELETE)
         const confirmText = window.prompt(
           'Type DELETE to confirm account deletion.',
           ""
         );
         if (confirmText !== "DELETE") {
-          setPrivacyStatus("Deletion cancelled.", "err");
+          setPrivacyStatus("Deletion cancelled — confirmation did not match DELETE.", "err");
           return;
         }
         setPrivacyStatus("Deleting account…");
         deleteBtn.disabled = true;
         try {
           await api.deleteAccount();
-          await auth.signOut();
-          setPrivacyStatus("Account deleted.", "ok");
+          try {
+            await auth.signOut();
+          } catch (_) {}
+          setPrivacyStatus("Account deleted. Signing you out…", "ok");
           location.href = "/auth/?deleted=1";
         } catch (err) {
           setPrivacyStatus(err.message || "Delete failed", "err");

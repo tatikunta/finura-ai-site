@@ -410,7 +410,7 @@
       return { invoices: state.invoices };
     }
 
-    if (method === "GET" && path === "/v1/account/export") {
+    if (method === "GET" && path === "/v1/account/data-export") {
       return {
         exported_at: Math.floor(Date.now() / 1000),
         account: state.account,
@@ -430,7 +430,7 @@
       };
     }
 
-    if (method === "DELETE" && path === "/v1/account") {
+    if (method === "DELETE" && (path === "/v1/account" || path.indexOf("/v1/account?") === 0)) {
       try {
         localStorage.removeItem("finura_mock_account");
       } catch (_) {}

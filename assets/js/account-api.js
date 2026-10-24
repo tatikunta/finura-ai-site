@@ -230,10 +230,15 @@
     });
   }
   function exportAccount() {
-    return accountFetch("/v1/account/export");
+    // ECRP: GET /v1/account/data-export (not /export)
+    return accountFetch("/v1/account/data-export");
   }
   function deleteAccount() {
-    return accountFetch("/v1/account", { method: "DELETE" });
+    // ECRP: DELETE /v1/account requires X-Confirm-Delete: DELETE
+    return accountFetch("/v1/account", {
+      method: "DELETE",
+      headers: { "X-Confirm-Delete": "DELETE" },
+    });
   }
 
   /**

@@ -10,7 +10,7 @@ API_BASE: "https://finura-api-245877296154.asia-south1.run.app"
 SELF_SERVE_ENABLED: true    // Free → sign-up; paid stay early-access until billing
 BILLING_ENABLED: false      // Razorpay Checkout gate
 TURNSTILE_SITE_KEY: ""      // Cloudflare Turnstile site key; empty = off
-ACCOUNT_PRIVACY_ENABLED: false  // Export / delete account UI; on when backend is live
+ACCOUNT_PRIVACY_ENABLED: true   // Export GET /v1/account/data-export; delete DELETE /v1/account + X-Confirm-Delete
 MOCK_MODE: false            // localhost / ?mock=1 only — never on finuraai.org
 FIREBASE: { apiKey, authDomain, projectId, appId, … }  // public web config
 ```
