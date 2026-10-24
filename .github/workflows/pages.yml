@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # enablement: true self-heals when Pages source is not yet Actions
       # (earlier failure: configure-pages "Get Pages site failed" / Not Found).
