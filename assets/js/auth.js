@@ -180,6 +180,16 @@
     if (auth) await auth.signOut();
   }
 
+  async function sendPasswordResetEmail(email) {
+    init();
+    if (useMockAuth()) {
+      return { mock: true, email: email };
+    }
+    if (!auth) throw initError || new Error("Auth not initialised");
+    await auth.sendPasswordResetEmail(email);
+    return { mock: false, email: email };
+  }
+
   function isMock() {
     return useMockAuth();
   }
@@ -197,6 +207,7 @@
     signInWithEmail,
     signUpWithEmail,
     signOut,
+    sendPasswordResetEmail,
     isMock,
     firebaseConfigured,
     getInitError,

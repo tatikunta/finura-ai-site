@@ -1,6 +1,7 @@
 (function () {
   const api = window.FinuraAccountApi;
   const auth = window.FinuraAuth;
+  const turnstile = window.FinuraTurnstile;
   const status = document.getElementById("auth-status");
   const modeBanner = document.getElementById("auth-mode-banner");
   const form = document.getElementById("email-form");
@@ -8,6 +9,7 @@
   const title = document.getElementById("auth-title");
   const submitBtn = document.getElementById("email-submit");
   const nameField = document.getElementById("display-name-field");
+  const forgotLink = document.getElementById("forgot-password");
   let mode = "signin"; // signin | signup
 
   const params = new URLSearchParams(location.search);
@@ -38,6 +40,7 @@
     if (title) title.textContent = mode === "signup" ? "Create account" : "Sign in";
     if (submitBtn) submitBtn.textContent = mode === "signup" ? "Create account" : "Sign in";
     if (nameField) nameField.hidden = mode !== "signup";
+    if (forgotLink) forgotLink.hidden = mode !== "signin";
     if (toggle) {
       toggle.textContent =
         mode === "signup"
@@ -66,14 +69,29 @@
     }
   }
 
-  async function afterAuth() {
+  if (turnstile && turnstile.enabled()) {
+    turnstile.render().catch(function () {
+      setStatus("Could not load bot check. Try refreshing.", "err");
+    });
+  }
+
+  async function requireTurnstileToken() {
+    if (!turnstile || !turnstile.enabled()) return "";
+    const token = turnstile.getToken();
+    if (!token) {
+      throw new Error("Please complete the bot check before continuing.");
+    }
+    return token;
+  }
+
+  async function afterAuth(turnstileToken) {
     setStatus("Preparing your account…");
     try {
-      await api.bootstrap(
-        planIntent
-          ? { account_name: undefined, account_type: "individual" }
-          : {}
-      );
+      const payload = planIntent
+        ? { account_name: undefined, account_type: "individual" }
+        : {};
+      if (turnstileToken) payload.turnstile_token = turnstileToken;
+      await api.bootstrap(payload);
     } catch (err) {
       // getMe auto-bootstraps on backend; bootstrap may 404 in mock-off live.
       try {
@@ -100,7 +118,7 @@
 
   auth.onAuthStateChanged(function (user) {
     if (user && !document.body.dataset.authBusy) {
-      afterAuth();
+      afterAuth("");
     }
   });
 
@@ -110,12 +128,37 @@
       document.body.dataset.authBusy = "1";
       setStatus("Opening Google…");
       try {
+        const turnstileToken = await requireTurnstileToken();
         await auth.signInWithGoogle();
-        await afterAuth();
+        await afterAuth(turnstileToken);
       } catch (err) {
         setStatus(err.message || "Google sign-in failed", "err");
+        if (turnstile) turnstile.reset();
       } finally {
         delete document.body.dataset.authBusy;
+      }
+    });
+  }
+
+  if (forgotLink) {
+    forgotLink.addEventListener("click", async function (e) {
+      e.preventDefault();
+      const emailInput = form && form.email;
+      const email = emailInput && emailInput.value.trim();
+      if (!email) {
+        setStatus("Enter your email above, then click Forgot password.", "err");
+        if (emailInput) emailInput.focus();
+        return;
+      }
+      setStatus("Sending password reset email…");
+      try {
+        await auth.sendPasswordResetEmail(email);
+        setStatus(
+          "Password reset email sent to " + email + ". Check your inbox.",
+          "ok"
+        );
+      } catch (err) {
+        setStatus(err.message || "Could not send reset email", "err");
       }
     });
   }
@@ -129,14 +172,16 @@
       const displayName = form.display_name ? form.display_name.value.trim() : "";
       setStatus(mode === "signup" ? "Creating account…" : "Signing in…");
       try {
+        const turnstileToken = await requireTurnstileToken();
         if (mode === "signup") {
           await auth.signUpWithEmail(email, password, displayName);
         } else {
           await auth.signInWithEmail(email, password);
         }
-        await afterAuth();
+        await afterAuth(turnstileToken);
       } catch (err) {
         setStatus(err.message || "Authentication failed", "err");
+        if (turnstile) turnstile.reset();
       } finally {
         delete document.body.dataset.authBusy;
       }

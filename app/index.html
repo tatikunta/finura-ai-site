@@ -2,12 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' mailto:; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://www.gstatic.com https://www.google.com https://apis.google.com https://accounts.google.com https://challenges.cloudflare.com https://plausible.io https://checkout.razorpay.com https://cdn.razorpay.com; connect-src 'self' https://finura-api-245877296154.asia-south1.run.app https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://firestore.googleapis.com https://firebaseinstallations.googleapis.com https://fcmregistrations.googleapis.com https://firebase.googleapis.com https://*.googleapis.com https://*.firebaseio.com https://*.firebasestorage.app https://accounts.google.com https://www.gstatic.com https://challenges.cloudflare.com https://plausible.io https://api.razorpay.com https://lumberjack.razorpay.com; frame-src 'self' https://accounts.google.com https://*.firebaseapp.com https://finura-ecrp-20f2.firebaseapp.com https://challenges.cloudflare.com https://api.razorpay.com https://checkout.razorpay.com https://www.google.com; worker-src 'self' blob:; child-src 'self' blob: https://accounts.google.com https://*.firebaseapp.com; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Dashboard — FINURA AI</title>
 <meta name="description" content="FINURA AI account dashboard: plan, credits, API keys, usage, billing, and team seats.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dashboard — FINURA AI">
+<meta property="og:description" content="FINURA AI account dashboard: plan, credits, API keys, usage, billing, and team seats.">
+<meta property="og:image" content="https://finuraai.org/assets/logo-stacked.png">
+<meta property="og:url" content="https://finuraai.org/app/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dashboard — FINURA AI">
+<meta name="twitter:description" content="FINURA AI account dashboard: plan, credits, API keys, usage, billing, and team seats.">
 <link rel="canonical" href="https://finuraai.org/app/">
 <meta name="theme-color" content="#B75419">
+<link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="apple-touch-icon" href="/assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/site.css">
@@ -39,6 +50,7 @@
     <a href="#usage" data-tab="usage">Usage</a>
     <a href="#billing" data-tab="billing">Billing</a>
     <a href="#team" data-tab="team">Team</a>
+    <a href="#account" data-tab="account" hidden>Account</a>
     <a href="/app/playground/">Playground</a>
     <a href="/docs/">Docs</a>
   </nav>
@@ -131,6 +143,16 @@
       Seat invitations are not in the Phase 2–3 API contract yet. Upgrade to Business for 5 seats; manage members via support until the invite endpoint ships.
     </div>
   </section>
+
+  <section class="app-panel" id="panel-account" data-panel="account" hidden>
+    <p class="muted">Export a copy of your account data, or permanently delete your account. These actions call the live API when enabled.</p>
+    <div class="inline-actions" style="margin:18px 0">
+      <button type="button" class="btn s" id="export-account-btn">Export my data</button>
+      <button type="button" class="btn s" id="delete-account-btn" style="border-color:#b33;color:#b33">Delete account</button>
+    </div>
+    <p id="account-privacy-status" class="form-status" role="status"></p>
+    <p class="src">Uses <code>GET /v1/account/export</code> and <code>DELETE /v1/account</code>. Hidden until <code>ACCOUNT_PRIVACY_ENABLED</code> is true.</p>
+  </section>
 </main>
 </div>
 
@@ -140,6 +162,9 @@
 <a href="/docs/">Docs</a>
 <a href="/pricing/">Pricing</a>
 <a href="/enterprise/security.html">Security</a>
+<a href="/legal/terms/">Terms</a>
+<a href="/legal/privacy/">Privacy</a>
+<a href="/legal/refund/">Refunds</a>
 </div>
 <p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
 </div></footer>

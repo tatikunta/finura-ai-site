@@ -515,8 +515,12 @@
     });
   }
 
-  /* ---- Leads (also used on contact pages) ---- */
+  /* ---- Leads (also used on contact pages) → POST /demo/leads ---- */
   const leadForm = $("#lead-form");
+  const turnstile = window.FinuraTurnstile;
+  if (leadForm && turnstile && turnstile.enabled()) {
+    turnstile.render(leadForm.querySelector("[data-turnstile]")).catch(function () {});
+  }
   if (leadForm) {
     leadForm.addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -560,38 +564,105 @@
         payload.tier = plan;
       }
       if (companySize) payload.company_size = companySize;
+
+      if (turnstile && turnstile.enabled()) {
+        const token = turnstile.getToken(
+          leadForm.querySelector("[data-turnstile]")
+        );
+        if (!token) {
+          if (status) {
+            status.textContent = "Please complete the bot check before submitting.";
+            status.className = "form-status err";
+          }
+          return;
+        }
+        payload.turnstile_token = token;
+      }
+
+      function openMailtoFallback(reason) {
+        const lines = [
+          "Name: " + payload.name,
+          "Email: " + payload.email,
+          "Company: " + payload.company,
+          "Role: " + payload.role,
+          plan ? "Plan: " + plan : "",
+          companySize ? "Company size: " + companySize : "",
+          "",
+          payload.use_case || "",
+          "",
+          "(Submitted via mailto fallback — API post failed: " +
+            (reason || "unknown") +
+            ")",
+        ].filter(function (l, i, arr) {
+          return l !== "" || (i > 0 && arr[i - 1] !== "");
+        });
+        const subject = encodeURIComponent(
+          "FINURA lead — " + (payload.name || payload.email || "contact")
+        );
+        const body = encodeURIComponent(lines.join("\n"));
+        window.location.href =
+          "mailto:tatikunta.k@gmail.com?subject=" + subject + "&body=" + body;
+      }
+
       btn.disabled = true;
       if (status) {
-        status.textContent = "Sending…";
+        status.textContent = "Sending to /demo/leads…";
         status.className = "form-status";
       }
       try {
         const res = await api.submitLead(payload);
         if (res.ok) {
           leadForm.reset();
+          if (turnstile) turnstile.reset(leadForm.querySelector("[data-turnstile]"));
+          const msg =
+            (res.data && res.data.message) ||
+            "Thanks — we received your request.";
           if (status) {
-            status.textContent = "Thanks — we received your request.";
+            status.textContent = msg;
             status.className = "form-status ok";
           }
           const success = $("#lead-success");
           if (success) success.hidden = false;
-        } else if (res.status === 429) {
-          throw new Error("Rate limited — try again shortly.");
-        } else {
-          const detail =
-            (res.data && (res.data.detail || res.data.message)) ||
-            "HTTP " + res.status;
-          throw new Error(
-            typeof detail === "string" ? detail : "Request failed (" + res.status + ")."
-          );
+          return;
         }
-      } catch (err) {
+
+        let detail =
+          (res.data && (res.data.detail || res.data.message)) ||
+          "HTTP " + res.status;
+        if (typeof detail !== "string") {
+          detail = "Request failed (" + res.status + ").";
+        }
+        if (res.status === 429) {
+          detail = "Rate limited — try again shortly.";
+        }
+
+        // Client/validation errors: show message only. Mailto only when the post itself fails.
+        if (res.status >= 400 && res.status < 500) {
+          if (status) {
+            status.textContent = detail;
+            status.className = "form-status err";
+          }
+          if (turnstile) turnstile.reset(leadForm.querySelector("[data-turnstile]"));
+          return;
+        }
+
         if (status) {
           status.textContent =
-            (err && err.message) ||
-            "Could not reach the demo API. Email tatikunta.k@gmail.com if this persists.";
+            detail + " Opening your email client as a fallback…";
           status.className = "form-status err";
         }
+        if (turnstile) turnstile.reset(leadForm.querySelector("[data-turnstile]"));
+        openMailtoFallback(detail);
+      } catch (err) {
+        const reason =
+          (err && err.message) || "Could not reach the demo API";
+        if (status) {
+          status.textContent =
+            reason + " Opening your email client as a fallback…";
+          status.className = "form-status err";
+        }
+        if (turnstile) turnstile.reset(leadForm.querySelector("[data-turnstile]"));
+        openMailtoFallback(reason);
       } finally {
         btn.disabled = false;
       }

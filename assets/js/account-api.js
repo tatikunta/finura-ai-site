@@ -106,7 +106,10 @@
       if (body != null && !headers["Content-Type"]) {
         headers["Content-Type"] = "application/json";
       }
-      if (token && path.indexOf("/v1/account/") === 0) {
+      if (
+        token &&
+        (path === "/v1/account" || path.indexOf("/v1/account/") === 0)
+      ) {
         headers.Authorization = "Bearer " + token;
       }
       if (options.idempotencyKey) {
@@ -226,6 +229,12 @@
       idempotencyKey: idempotencyKey || "pg_" + Date.now().toString(36),
     });
   }
+  function exportAccount() {
+    return accountFetch("/v1/account/export");
+  }
+  function deleteAccount() {
+    return accountFetch("/v1/account", { method: "DELETE" });
+  }
 
   /**
    * Open Razorpay Checkout with the payload returned by POST .../billing/checkout.
@@ -294,6 +303,8 @@
     checkout,
     getInvoices,
     playgroundDecision,
+    exportAccount,
+    deleteAccount,
     openRazorpayCheckout,
   };
 })(window);

@@ -28,6 +28,19 @@ window.FINURA_CONFIG = Object.freeze({
   BILLING_ENABLED: false,
 
   /**
+   * Cloudflare Turnstile site key (public). Empty string disables the widget
+   * on auth + contact/lead forms. Secret key lives only on the API.
+   */
+  TURNSTILE_SITE_KEY: "",
+
+  /**
+   * When true, show Data export / Delete account on /app/ and call
+   * GET /v1/account/export and DELETE /v1/account. Keep false until the
+   * parallel backend PR is live.
+   */
+  ACCOUNT_PRIVACY_ENABLED: false,
+
+  /**
    * Local / screenshot mock for /v1/account/* (localhost or ?mock=1 only).
    * Ignored on finuraai.org / www.finuraai.org — production always hits the live API.
    */
