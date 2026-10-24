@@ -27,7 +27,7 @@ jobs:
       # enablement: true self-heals when Pages source is not yet Actions
       # (earlier failure: configure-pages "Get Pages site failed" / Not Found).
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
         with:
           enablement: true
 
