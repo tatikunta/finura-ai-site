@@ -151,7 +151,7 @@
       <button type="button" class="btn s" id="delete-account-btn" style="border-color:#b33;color:#b33">Delete account</button>
     </div>
     <p id="account-privacy-status" class="form-status" role="status"></p>
-    <p class="src">Uses <code>GET /v1/account/export</code> and <code>DELETE /v1/account</code>. Hidden until <code>ACCOUNT_PRIVACY_ENABLED</code> is true.</p>
+    <p class="src">Uses <code>GET /v1/account/data-export</code> and <code>DELETE /v1/account</code> (<code>X-Confirm-Delete: DELETE</code>). Gated by <code>ACCOUNT_PRIVACY_ENABLED</code>.</p>
   </section>
 </main>
 </div>
