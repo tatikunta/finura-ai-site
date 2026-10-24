@@ -2,12 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' mailto:; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://www.gstatic.com https://www.google.com https://apis.google.com https://accounts.google.com https://challenges.cloudflare.com https://plausible.io https://checkout.razorpay.com https://cdn.razorpay.com; connect-src 'self' https://finura-api-245877296154.asia-south1.run.app https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://firestore.googleapis.com https://firebaseinstallations.googleapis.com https://fcmregistrations.googleapis.com https://firebase.googleapis.com https://*.googleapis.com https://*.firebaseio.com https://*.firebasestorage.app https://accounts.google.com https://www.gstatic.com https://challenges.cloudflare.com https://plausible.io https://api.razorpay.com https://lumberjack.razorpay.com; frame-src 'self' https://accounts.google.com https://*.firebaseapp.com https://finura-ecrp-20f2.firebaseapp.com https://challenges.cloudflare.com https://api.razorpay.com https://checkout.razorpay.com https://www.google.com; worker-src 'self' blob:; child-src 'self' blob: https://accounts.google.com https://*.firebaseapp.com; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Live demo — FINURA AI</title>
 <meta name="description" content="Live FINURA ECRP demo: governed refund decisions with SHAP explanations, policy browser, and agentic goal runs — wired to the Mumbai demo API.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Live demo — FINURA AI">
+<meta property="og:description" content="Live FINURA ECRP demo: governed refund decisions with SHAP explanations, policy browser, and agentic goal runs — wired to the Mumbai demo API.">
+<meta property="og:image" content="https://finuraai.org/assets/logo-stacked.png">
+<meta property="og:url" content="https://finuraai.org/demo/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Live demo — FINURA AI">
+<meta name="twitter:description" content="Live FINURA ECRP demo: governed refund decisions with SHAP explanations, policy browser, and agentic goal runs — wired to the Mumbai demo API.">
 <link rel="canonical" href="https://finuraai.org/demo/">
 <meta name="theme-color" content="#B75419">
+<link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="apple-touch-icon" href="/assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/site.css">
@@ -78,10 +89,13 @@
 </div>
 </div></section>
 
+<!-- Ashish: optional traction strip (pilot logos / counts) can go above the pilot form.
+<section id="demo-traction">…</section>
+-->
 <section><div class="wrap wrap-narrow">
 <span class="eyebrow">Pilot</span>
 <h2>Request a bank pilot</h2>
-<p class="lead">Posts to <code>POST /demo/leads</code> — no mailto. Rate-limited on the API.</p>
+<p class="lead">Posts to <code>POST /demo/leads</code>. Mailto opens only if that post fails. Rate-limited on the API.</p>
 <form id="lead-form" style="margin-top:28px;max-width:560px" novalidate>
 <div class="form-row">
 <label>Name<input name="name" required autocomplete="name"></label>
@@ -93,6 +107,7 @@
 </div>
 <label>Use case<textarea name="use_case" rows="4" placeholder="e.g. card dispute refunds with human approval"></textarea></label>
 <label class="check"><input name="consent" type="checkbox" required> I agree to be contacted about a FINURA pilot. Demo leads are stored in an isolated demo tenant.</label>
+<div data-turnstile hidden style="margin:12px 0"></div>
 <button class="btn p" type="submit">Submit pilot request</button>
 <p id="lead-status" class="form-status" role="status" aria-live="polite"></p>
 <div id="lead-success" class="closing" hidden>Received. We'll follow up at your work email.</div>
@@ -117,6 +132,7 @@
 <p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
 </div></footer>
 <script src="/assets/js/config.js"></script>
+<script src="/assets/js/turnstile.js"></script>
 <script src="/assets/js/demo-api.js"></script>
 <script src="/assets/js/demo-samples.js"></script>
 <script src="/assets/js/demo-app.js"></script>

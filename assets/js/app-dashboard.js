@@ -23,6 +23,7 @@
     usage: "Usage",
     billing: "Billing",
     team: "Team",
+    account: "Account",
   };
 
   let me = null;
@@ -470,6 +471,80 @@
     $("#team-tenant").textContent = acct.tenant_id || "—";
   }
 
+  function wireAccountPrivacy() {
+    const nav = document.querySelector('[data-tab="account"]');
+    const enabled = !!cfg.ACCOUNT_PRIVACY_ENABLED;
+    if (nav) nav.hidden = !enabled;
+    if (!enabled) return;
+
+    const status = $("#account-privacy-status");
+    function setPrivacyStatus(msg, kind) {
+      if (!status) return;
+      status.textContent = msg || "";
+      status.className = "form-status" + (kind ? " " + kind : "");
+    }
+
+    const exportBtn = $("#export-account-btn");
+    if (exportBtn && !exportBtn.dataset.wired) {
+      exportBtn.dataset.wired = "1";
+      exportBtn.addEventListener("click", async function () {
+        setPrivacyStatus("Preparing export…");
+        exportBtn.disabled = true;
+        try {
+          const res = await api.exportAccount();
+          const data = res.data;
+          const blob = new Blob(
+            [typeof data === "string" ? data : JSON.stringify(data, null, 2)],
+            { type: "application/json" }
+          );
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "finura-account-export.json";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+          setPrivacyStatus("Export downloaded.", "ok");
+        } catch (err) {
+          setPrivacyStatus(err.message || "Export failed", "err");
+        } finally {
+          exportBtn.disabled = false;
+        }
+      });
+    }
+
+    const deleteBtn = $("#delete-account-btn");
+    if (deleteBtn && !deleteBtn.dataset.wired) {
+      deleteBtn.dataset.wired = "1";
+      deleteBtn.addEventListener("click", async function () {
+        const ok = window.confirm(
+          "Permanently delete your FINURA account and associated data? This cannot be undone."
+        );
+        if (!ok) return;
+        const confirmText = window.prompt(
+          'Type DELETE to confirm account deletion.',
+          ""
+        );
+        if (confirmText !== "DELETE") {
+          setPrivacyStatus("Deletion cancelled.", "err");
+          return;
+        }
+        setPrivacyStatus("Deleting account…");
+        deleteBtn.disabled = true;
+        try {
+          await api.deleteAccount();
+          await auth.signOut();
+          setPrivacyStatus("Account deleted.", "ok");
+          location.href = "/auth/?deleted=1";
+        } catch (err) {
+          setPrivacyStatus(err.message || "Delete failed", "err");
+          deleteBtn.disabled = false;
+        }
+      });
+    }
+  }
+
   async function refreshMe() {
     const res = await api.getMe();
     me = res.data;
@@ -481,6 +556,7 @@
     }
     renderOverview();
     renderTeam();
+    wireAccountPrivacy();
     await renderChart();
     await renderKeys();
     await renderUsage();
@@ -505,7 +581,9 @@
       } catch (_) {}
       await refreshMe();
       showGate("ok");
-      const tab = (location.hash || "").replace("#", "") || params.get("tab") || "overview";
+      wireAccountPrivacy();
+      let tab = (location.hash || "").replace("#", "") || params.get("tab") || "overview";
+      if (tab === "account" && !cfg.ACCOUNT_PRIVACY_ENABLED) tab = "overview";
       selectTab(tab);
       if (params.get("checkout") === "1" && params.get("plan")) {
         selectTab("billing");

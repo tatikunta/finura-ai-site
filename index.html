@@ -2,20 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' mailto:; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://www.gstatic.com https://www.google.com https://apis.google.com https://accounts.google.com https://challenges.cloudflare.com https://plausible.io https://checkout.razorpay.com https://cdn.razorpay.com; connect-src 'self' https://finura-api-245877296154.asia-south1.run.app https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://firestore.googleapis.com https://firebaseinstallations.googleapis.com https://fcmregistrations.googleapis.com https://firebase.googleapis.com https://*.googleapis.com https://*.firebaseio.com https://*.firebasestorage.app https://accounts.google.com https://www.gstatic.com https://challenges.cloudflare.com https://plausible.io https://api.razorpay.com https://lumberjack.razorpay.com; frame-src 'self' https://accounts.google.com https://*.firebaseapp.com https://finura-ecrp-20f2.firebaseapp.com https://challenges.cloudflare.com https://api.razorpay.com https://checkout.razorpay.com https://www.google.com; worker-src 'self' blob:; child-src 'self' blob: https://accounts.google.com https://*.firebaseapp.com; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>FINURA AI — The cognitive engine for trustworthy autonomous AI</title>
 <meta name="description" content="FINURA AI is the governance layer between AI models and your systems: a neuro-symbolic engine and Alpha Triad that make autonomous agents reason, check themselves and stay accountable — starting with banks.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="FINURA AI — The cognitive engine for trustworthy autonomous AI">
-<meta property="og:description" content="Intelligence proposes. Finura decides. Neuro-symbolic reasoning and the Alpha Triad for governed AI agents, starting with banks.">
+<meta property="og:description" content="FINURA AI is the governance layer between AI models and your systems: a neuro-symbolic engine and Alpha Triad that make autonomous agents reason, check themselves and stay accountable — starting with banks.">
 <meta property="og:image" content="https://finuraai.org/assets/logo-stacked.png">
 <meta property="og:url" content="https://finuraai.org/">
-<link rel="canonical" href="https://finuraai.org/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="FINURA AI — The cognitive engine for trustworthy autonomous AI">
-<meta name="twitter:description" content="Intelligence proposes. Finura decides.">
+<meta name="twitter:description" content="FINURA AI is the governance layer between AI models and your systems: a neuro-symbolic engine and Alpha Triad that make autonomous agents reason, check themselves and stay accountable — starting with banks.">
+<link rel="canonical" href="https://finuraai.org/">
 <meta name="theme-color" content="#B75419">
-<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="apple-touch-icon" href="/assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/site.css">
@@ -139,12 +142,13 @@
 <section id="traction" class="alt"><div class="wrap reveal">
 <span class="eyebrow">Traction</span>
 <h2>Early signals</h2>
-<p class="lead">Placeholders for Ashish to fill — no invented metrics or partner logos.</p>
+<!-- Ashish: add pilot counts, permissioned partner logos, and milestone dates when ready.
 <div class="grid g3" style="margin-top:36px">
-<div class="placeholder-box"><strong>Placeholder · pilots</strong>Bank / NBFCs in conversation — replace with real count when ready.</div>
-<div class="placeholder-box"><strong>Placeholder · logos</strong>Partner / design-partner marks go here (permissioned only).</div>
-<div class="placeholder-box"><strong>Placeholder · milestones</strong>Demo API live in Mumbai · site live demo · first governed workflow — update dates/status.</div>
+  <div>…pilots…</div>
+  <div>…logos…</div>
+  <div>…milestones…</div>
 </div>
+-->
 </div></section>
 
 <section id="banks"><div class="wrap reveal">
@@ -228,10 +232,11 @@
 <label>I am a<select name="role"><option value="bank">Bank</option><option value="investor">Investor</option><option value="other">Other</option></select></label>
 <label>Use case / message<textarea name="use_case" rows="4"></textarea></label>
 <label class="check"><input name="consent" type="checkbox" required> I agree to be contacted about FINURA.</label>
+<div data-turnstile hidden style="margin:12px 0"></div>
 <button class="btn p" type="submit">Request a pilot</button>
 <p id="lead-status" class="form-status" role="status" aria-live="polite"></p>
 <div id="lead-success" class="closing" hidden>Thanks — we received your request via the demo leads API.</div>
-<p class="src">Submits to <code>POST /demo/leads</code> on the Mumbai API (not mailto).</p>
+<p class="src">Submits to <code>POST /demo/leads</code> on the Mumbai API. Mailto opens only if that post fails.</p>
 </form>
 </div></section>
 </main>
@@ -247,14 +252,15 @@
 <a href="enterprise/india-residency.html">India residency</a>
 <a href="enterprise/architecture.html">Architecture</a>
 <a href="enterprise/deployment.html">Deployment</a>
-<a href="legal/terms/">Terms</a>
-<a href="legal/privacy/">Privacy</a>
-<a href="legal/refund/">Refunds</a>
+<a href="/legal/terms/">Terms</a>
+<a href="/legal/privacy/">Privacy</a>
+<a href="/legal/refund/">Refunds</a>
 </div>
 <p>FINURA AI Private Limited</p>
 <p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
 </div></footer>
 <script src="assets/js/config.js"></script>
+<script src="assets/js/turnstile.js"></script>
 <script src="assets/js/demo-api.js"></script>
 <script src="assets/js/demo-samples.js"></script>
 <script src="assets/js/demo-app.js"></script>

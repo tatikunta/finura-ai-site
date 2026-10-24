@@ -410,6 +410,33 @@
       return { invoices: state.invoices };
     }
 
+    if (method === "GET" && path === "/v1/account/export") {
+      return {
+        exported_at: Math.floor(Date.now() / 1000),
+        account: state.account,
+        user: state.user,
+        plan: plan,
+        credits: state.credits,
+        api_keys: (state.keys || []).map(function (k) {
+          return {
+            id: k.id,
+            name: k.name,
+            prefix: k.prefix,
+            created_at: k.created_at,
+            last_used_at: k.last_used_at || null,
+          };
+        }),
+        ledger: state.ledger,
+      };
+    }
+
+    if (method === "DELETE" && path === "/v1/account") {
+      try {
+        localStorage.removeItem("finura_mock_account");
+      } catch (_) {}
+      return { deleted: true };
+    }
+
     if (method === "POST" && path === "/v1/account/playground/decisions") {
       if (state.credits.remaining <= 0 && plan.hard_cap) {
         throw err("credits_exhausted", "Monthly credits exhausted on Free plan.", 402);
