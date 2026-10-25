@@ -72,11 +72,40 @@
     const detail = data && data.detail;
     let code = "http_" + status;
     let message = "Request failed (" + status + ")";
-    if (detail && typeof detail === "object") {
+    const helper = global.FinuraFormErrors;
+    if (helper && helper.fromDetail) {
+      const formatted = helper.fromDetail(detail, status);
+      message = formatted.message || message;
+      if (formatted.resetTurnstile) code = "turnstile_failed";
+      if (detail && typeof detail === "object" && !Array.isArray(detail)) {
+        code = detail.code || code;
+      }
+      return { code: code, message: message, status: status, data: data };
+    }
+    if (Array.isArray(detail) && detail.length) {
+      const names = [];
+      detail.forEach(function (item) {
+        const loc = (item && item.loc) || [];
+        const field = loc.length ? loc[loc.length - 1] : "";
+        if (field && field !== "body" && field !== "query" && field !== "path") {
+          names.push(field);
+        }
+      });
+      if (names.length) {
+        message = "Please fill in: " + names.join(", ");
+      } else if (detail[0] && detail[0].msg) {
+        message = String(detail[0].msg);
+      }
+    } else if (detail && typeof detail === "object") {
       code = detail.code || code;
       message = detail.message || message;
     } else if (typeof detail === "string") {
-      message = detail;
+      if (/turnstile/i.test(detail)) {
+        message = "Bot check failed, please retry";
+        code = "turnstile_failed";
+      } else {
+        message = detail;
+      }
     }
     return { code: code, message: message, status: status, data: data };
   }
