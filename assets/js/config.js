@@ -31,7 +31,7 @@ window.FINURA_CONFIG = Object.freeze({
    * Cloudflare Turnstile site key (public). Empty string disables the widget
    * on auth + contact/lead forms. Secret key lives only on the API.
    */
-  TURNSTILE_SITE_KEY: "",
+  TURNSTILE_SITE_KEY: "0x4AAAAAAFkP0ruNlugD7m7t",
 
   /**
    * When true, show Data export / Delete account on /app/.
