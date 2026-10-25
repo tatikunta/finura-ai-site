@@ -254,9 +254,23 @@
             status.className = "form-status ok";
           }
           renderRefund(decision, { sample: !!decision.sample });
-        } else {
-          throw new Error("HTTP " + res.status);
+          return;
         }
+        if (res.status >= 400 && res.status < 500) {
+          const formatted = formatApiError(
+            res.data &&
+              (res.data.detail !== undefined
+                ? res.data.detail
+                : res.data.message),
+            res.status
+          );
+          if (status) {
+            status.textContent = formatted.message;
+            status.className = "form-status err";
+          }
+          return;
+        }
+        throw new Error("HTTP " + res.status);
       } catch (_) {
         if (status) {
           status.textContent =
@@ -515,6 +529,24 @@
     });
   }
 
+  function formatApiError(detail, status) {
+    const helper = window.FinuraFormErrors;
+    if (helper && helper.fromDetail) return helper.fromDetail(detail, status);
+    if (typeof detail === "string") {
+      if (/turnstile/i.test(detail)) {
+        return {
+          message: "Bot check failed, please retry",
+          resetTurnstile: true,
+        };
+      }
+      return { message: detail, resetTurnstile: false };
+    }
+    return {
+      message: status ? "Request failed (" + status + ")." : "Request failed.",
+      resetTurnstile: false,
+    };
+  }
+
   /* ---- Leads (also used on contact pages) → POST /demo/leads ---- */
   const leadForm = $("#lead-form");
   const turnstile = window.FinuraTurnstile;
@@ -526,12 +558,34 @@
       e.preventDefault();
       const btn = leadForm.querySelector('[type="submit"]');
       const status = $("#lead-status");
-      const consent = leadForm.consent && leadForm.consent.checked;
-      if (!consent) {
+      const turnstileEl = leadForm.querySelector("[data-turnstile]");
+
+      function setLeadErr(msg) {
         if (status) {
-          status.textContent = "Please confirm consent to be contacted.";
+          status.textContent = msg;
           status.className = "form-status err";
         }
+      }
+
+      const name = (leadForm.name && leadForm.name.value.trim()) || "";
+      const email = (leadForm.email && leadForm.email.value.trim()) || "";
+      const company =
+        (leadForm.company && leadForm.company.value.trim()) || "";
+      const missing = [];
+      if (!name) missing.push("Name");
+      if (!email) missing.push("Work email");
+      if (!company) missing.push("Company");
+      if (missing.length) {
+        setLeadErr("Please fill in: " + missing.join(", "));
+        if (!name && leadForm.name) leadForm.name.focus();
+        else if (!email && leadForm.email) leadForm.email.focus();
+        else if (leadForm.company) leadForm.company.focus();
+        return;
+      }
+
+      const consent = leadForm.consent && leadForm.consent.checked;
+      if (!consent) {
+        setLeadErr("Please confirm consent to be contacted.");
         return;
       }
       const plan =
@@ -552,9 +606,9 @@
           : "[" + meta.join(", ") + "]";
       }
       const payload = {
-        name: leadForm.name.value.trim(),
-        email: leadForm.email.value.trim(),
-        company: (leadForm.company && leadForm.company.value.trim()) || "",
+        name: name,
+        email: email,
+        company: company,
         role: (leadForm.role && leadForm.role.value) || "",
         use_case: useCase,
         consent: true,
@@ -566,14 +620,9 @@
       if (companySize) payload.company_size = companySize;
 
       if (turnstile && turnstile.enabled()) {
-        const token = turnstile.getToken(
-          leadForm.querySelector("[data-turnstile]")
-        );
+        const token = turnstile.getToken(turnstileEl);
         if (!token) {
-          if (status) {
-            status.textContent = "Please complete the bot check before submitting.";
-            status.className = "form-status err";
-          }
+          setLeadErr("Please complete the bot check before submitting.");
           return;
         }
         payload.turnstile_token = token;
@@ -613,7 +662,7 @@
         const res = await api.submitLead(payload);
         if (res.ok) {
           leadForm.reset();
-          if (turnstile) turnstile.reset(leadForm.querySelector("[data-turnstile]"));
+          if (turnstile) turnstile.reset(turnstileEl);
           const msg =
             (res.data && res.data.message) ||
             "Thanks — we received your request.";
@@ -626,33 +675,25 @@
           return;
         }
 
-        let detail =
-          (res.data && (res.data.detail || res.data.message)) ||
-          "HTTP " + res.status;
-        if (typeof detail !== "string") {
-          detail = "Request failed (" + res.status + ").";
-        }
-        if (res.status === 429) {
-          detail = "Rate limited — try again shortly.";
-        }
-
+        const formatted = formatApiError(
+          res.data &&
+            (res.data.detail !== undefined ? res.data.detail : res.data.message),
+          res.status
+        );
         // Client/validation errors: show message only. Mailto only when the post itself fails.
         if (res.status >= 400 && res.status < 500) {
-          if (status) {
-            status.textContent = detail;
-            status.className = "form-status err";
-          }
-          if (turnstile) turnstile.reset(leadForm.querySelector("[data-turnstile]"));
+          setLeadErr(formatted.message);
+          if (turnstile) turnstile.reset(turnstileEl);
           return;
         }
 
         if (status) {
           status.textContent =
-            detail + " Opening your email client as a fallback…";
+            formatted.message + " Opening your email client as a fallback…";
           status.className = "form-status err";
         }
-        if (turnstile) turnstile.reset(leadForm.querySelector("[data-turnstile]"));
-        openMailtoFallback(detail);
+        if (turnstile) turnstile.reset(turnstileEl);
+        openMailtoFallback(formatted.message);
       } catch (err) {
         const reason =
           (err && err.message) || "Could not reach the demo API";
@@ -661,7 +702,7 @@
             reason + " Opening your email client as a fallback…";
           status.className = "form-status err";
         }
-        if (turnstile) turnstile.reset(leadForm.querySelector("[data-turnstile]"));
+        if (turnstile) turnstile.reset(turnstileEl);
         openMailtoFallback(reason);
       } finally {
         btn.disabled = false;

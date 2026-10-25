@@ -84,6 +84,19 @@
     return token;
   }
 
+  function humanizeAuthError(err) {
+    const raw = (err && err.message) || "";
+    const helper = window.FinuraFormErrors;
+    if (helper && helper.isTurnstileMessage && helper.isTurnstileMessage(raw)) {
+      return "Bot check failed, please retry";
+    }
+    if (/turnstile/i.test(raw)) return "Bot check failed, please retry";
+    if (err && err.code === "turnstile_failed") {
+      return "Bot check failed, please retry";
+    }
+    return raw || "Authentication failed";
+  }
+
   async function afterAuth(turnstileToken) {
     setStatus("Preparing your account…");
     try {
@@ -93,11 +106,25 @@
       if (turnstileToken) payload.turnstile_token = turnstileToken;
       await api.bootstrap(payload);
     } catch (err) {
+      if (
+        (err && err.code === "turnstile_failed") ||
+        /turnstile/i.test((err && err.message) || "")
+      ) {
+        setStatus("Bot check failed, please retry", "err");
+        if (turnstile) turnstile.reset();
+        return;
+      }
       // getMe auto-bootstraps on backend; bootstrap may 404 in mock-off live.
       try {
         await api.getMe();
       } catch (err2) {
-        setStatus(err2.message || "Could not bootstrap account", "err");
+        setStatus(humanizeAuthError(err2) || "Could not bootstrap account", "err");
+        if (
+          (err2 && err2.code === "turnstile_failed") ||
+          /turnstile/i.test((err2 && err2.message) || "")
+        ) {
+          if (turnstile) turnstile.reset();
+        }
         return;
       }
     }
@@ -132,7 +159,7 @@
         await auth.signInWithGoogle();
         await afterAuth(turnstileToken);
       } catch (err) {
-        setStatus(err.message || "Google sign-in failed", "err");
+        setStatus(humanizeAuthError(err) || "Google sign-in failed", "err");
         if (turnstile) turnstile.reset();
       } finally {
         delete document.body.dataset.authBusy;
@@ -180,7 +207,7 @@
         }
         await afterAuth(turnstileToken);
       } catch (err) {
-        setStatus(err.message || "Authentication failed", "err");
+        setStatus(humanizeAuthError(err), "err");
         if (turnstile) turnstile.reset();
       } finally {
         delete document.body.dataset.authBusy;

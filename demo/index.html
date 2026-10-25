@@ -98,11 +98,11 @@
 <p class="lead">Posts to <code>POST /demo/leads</code>. Mailto opens only if that post fails. Rate-limited on the API.</p>
 <form id="lead-form" style="margin-top:28px;max-width:560px" novalidate>
 <div class="form-row">
-<label>Name<input name="name" required autocomplete="name"></label>
-<label>Work email<input name="email" type="email" required autocomplete="email"></label>
+<label>Name <span aria-hidden="true">*</span><input name="name" required autocomplete="name"></label>
+<label>Work email <span aria-hidden="true">*</span><input name="email" type="email" required autocomplete="email"></label>
 </div>
 <div class="form-row">
-<label>Company<input name="company" autocomplete="organization"></label>
+<label>Company <span aria-hidden="true">*</span><input name="company" required autocomplete="organization"></label>
 <label>Role<select name="role"><option value="risk">Risk / fraud</option><option value="compliance">Compliance</option><option value="product">Product</option><option value="engineering">Engineering</option><option value="executive">Executive</option><option value="other">Other</option></select></label>
 </div>
 <label>Use case<textarea name="use_case" rows="4" placeholder="e.g. card dispute refunds with human approval"></textarea></label>
@@ -132,12 +132,12 @@
 <p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
 </div></footer>
 <script src="/assets/js/config.js"></script>
+<script src="/assets/js/site.js"></script>
 <script src="/assets/js/turnstile.js"></script>
 <script src="/assets/js/demo-api.js"></script>
 <script src="/assets/js/demo-samples.js"></script>
 <script src="/assets/js/demo-app.js"></script>
 <script src="/assets/js/auth.js"></script>
-<script src="/assets/js/site.js"></script>
 <script src="/assets/js/nav-auth.js"></script>
 </body>
 </html>
