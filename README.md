@@ -7,22 +7,23 @@ Static marketing + live demo + self-serve console for [finuraai.org](https://fin
 ```js
 // assets/js/config.js
 API_BASE: "https://finura-api-245877296154.asia-south1.run.app"
-SELF_SERVE_ENABLED: true    // Free → sign-up; paid stay early-access until billing
-BILLING_ENABLED: false      // Razorpay Checkout gate
+SELF_SERVE_ENABLED: true    // Free → sign-up; paid CTAs honour BILLING_ENABLED
+BILLING_ENABLED: true       // Cashfree Checkout via POST /v1/account/billing/checkout
+CASHFREE_MODE: "sandbox"    // TEST; set "production" only with live backend keys
 TURNSTILE_SITE_KEY: ""      // Cloudflare Turnstile site key; empty = off
 ACCOUNT_PRIVACY_ENABLED: true   // Export GET /v1/account/data-export; delete DELETE /v1/account + X-Confirm-Delete
 MOCK_MODE: false            // localhost / ?mock=1 only — never on finuraai.org
 FIREBASE: { apiKey, authDomain, projectId, appId, … }  // public web config
 ```
 
-Never commit API tokens, Firebase Admin keys, Turnstile secrets, or Razorpay secrets. GitHub Pages is public. Mock mode is blocked on `finuraai.org` / `www.finuraai.org`.
+Never commit API tokens, Firebase Admin keys, Turnstile secrets, or Cashfree secrets. The frontend only uses `payment_session_id` / public App ID from the API. GitHub Pages is public. Mock mode is blocked on `finuraai.org` / `www.finuraai.org`.
 
 ## Surfaces
 
 | Path | Purpose |
 |------|---------|
 | `/demo/` | Public demo → `/demo/*` Mumbai API |
-| `/pricing/` | Self-serve plans (INR/USD, FAQ; Free signup + paid waitlist) |
+| `/pricing/` | Self-serve plans (INR/USD, FAQ; Free signup + Cashfree paid checkout) |
 | `/contact/` | Early access / contact sales form → `POST /demo/leads` |
 | `/auth/` | Firebase Google + email + forgot-password (mock on localhost only) |
 | `/app/` | Account dashboard: overview, keys, usage, billing, team |

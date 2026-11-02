@@ -15,6 +15,8 @@
   const params = new URLSearchParams(location.search);
   const planIntent = params.get("plan");
   const wantsCheckout = params.get("checkout") === "1";
+  const currencyIntent =
+    (params.get("currency") || "INR").toUpperCase() === "USD" ? "USD" : "INR";
   // Mock sticky flag is local/dev only — never persist on finuraai.org.
   if (params.get("mock") === "1") {
     const h = (location.hostname || "").toLowerCase();
@@ -132,12 +134,20 @@
     if (planIntent && planIntent !== "free" && wantsCheckout) {
       const cfg = window.FINURA_CONFIG || {};
       if (cfg.BILLING_ENABLED) {
-        location.href = "/app/?tab=billing&plan=" + encodeURIComponent(planIntent) + "&checkout=1";
+        location.href =
+          "/app/?tab=billing&plan=" +
+          encodeURIComponent(planIntent) +
+          "&checkout=1&currency=" +
+          encodeURIComponent(currencyIntent);
         return;
       }
     }
     if (planIntent && planIntent !== "free") {
-      location.href = "/app/?tab=billing&plan=" + encodeURIComponent(planIntent);
+      location.href =
+        "/app/?tab=billing&plan=" +
+        encodeURIComponent(planIntent) +
+        "&currency=" +
+        encodeURIComponent(currencyIntent);
       return;
     }
     location.href = "/app/";
