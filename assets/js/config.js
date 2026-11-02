@@ -1,7 +1,8 @@
 /**
  * FINURA site → Mumbai API + self-serve config.
  * Edit API_BASE / Firebase web config only. Never put tokens, service-account
- * keys, or Razorpay secrets here (GitHub Pages is public).
+ * keys, or Cashfree secrets here (GitHub Pages is public). Checkout uses only
+ * payment_session_id / public App ID returned by POST /v1/account/billing/checkout.
  *
  * Demo auth (coordinate with PR A):
  * - Preferred: public /demo/* routes (rate-limited, CORS locked) — no bearer.
@@ -24,8 +25,13 @@ window.FINURA_CONFIG = Object.freeze({
    * When false, all pricing CTAs keep early-access / contact-sales behaviour.
    */
   SELF_SERVE_ENABLED: true,
-  /** When false, paid plans keep early-access CTAs (no Razorpay Checkout). */
-  BILLING_ENABLED: false,
+  /** When false, paid plans keep early-access CTAs (no Cashfree Checkout). */
+  BILLING_ENABLED: true,
+  /**
+   * Cashfree JS SDK mode. "sandbox" = TEST; "production" = live.
+   * Must match the backend Cashfree environment that mints payment_session_id.
+   */
+  CASHFREE_MODE: "sandbox",
 
   /**
    * Cloudflare Turnstile site key (public). Empty string disables the widget

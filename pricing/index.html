@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' mailto:; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://www.gstatic.com https://www.google.com https://apis.google.com https://accounts.google.com https://challenges.cloudflare.com https://plausible.io https://checkout.razorpay.com https://cdn.razorpay.com; connect-src 'self' https://finura-api-245877296154.asia-south1.run.app https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://firestore.googleapis.com https://firebaseinstallations.googleapis.com https://fcmregistrations.googleapis.com https://firebase.googleapis.com https://*.googleapis.com https://*.firebaseio.com https://*.firebasestorage.app https://accounts.google.com https://www.gstatic.com https://challenges.cloudflare.com https://plausible.io https://api.razorpay.com https://lumberjack.razorpay.com; frame-src 'self' https://accounts.google.com https://*.firebaseapp.com https://finura-ecrp-20f2.firebaseapp.com https://challenges.cloudflare.com https://api.razorpay.com https://checkout.razorpay.com https://www.google.com; worker-src 'self' blob:; child-src 'self' blob: https://accounts.google.com https://*.firebaseapp.com; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' mailto:; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://www.gstatic.com https://www.google.com https://apis.google.com https://accounts.google.com https://challenges.cloudflare.com https://plausible.io https://sdk.cashfree.com; connect-src 'self' https://finura-api-245877296154.asia-south1.run.app https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://firestore.googleapis.com https://firebaseinstallations.googleapis.com https://fcmregistrations.googleapis.com https://firebase.googleapis.com https://*.googleapis.com https://*.firebaseio.com https://*.firebasestorage.app https://accounts.google.com https://www.gstatic.com https://challenges.cloudflare.com https://plausible.io https://api.cashfree.com https://sandbox.cashfree.com; frame-src 'self' https://accounts.google.com https://*.firebaseapp.com https://finura-ecrp-20f2.firebaseapp.com https://challenges.cloudflare.com https://sdk.cashfree.com https://api.cashfree.com https://sandbox.cashfree.com https://payments.cashfree.com https://payments-test.cashfree.com https://www.google.com; worker-src 'self' blob:; child-src 'self' blob: https://accounts.google.com https://*.firebaseapp.com; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pricing — FINURA AI</title>
 <meta name="description" content="FINURA AI pricing: Free, Starter, Business, and Enterprise. Monthly plans with included credits; 1 credit = 1 decision evaluation.">
@@ -43,7 +43,7 @@
 <section class="page-hero"><div class="wrap">
 <span class="eyebrow">Self-serve</span>
 <h1>Pricing</h1>
-<p class="lead">Monthly plans with included credits. Overages are pay-as-you-go. Free accounts can sign up now; paid checkout opens when billing is enabled.</p>
+<p class="lead">Monthly plans with included credits. Overages are pay-as-you-go. Sign in to start Free, or upgrade to Starter / Business via Cashfree Checkout.</p>
 <div class="currency-toggle" role="group" aria-label="Currency">
 <button type="button" id="currency-inr" class="chip" aria-pressed="true" data-currency="INR">INR (₹)</button>
 <button type="button" id="currency-usd" class="chip" aria-pressed="false" data-currency="USD">USD ($)</button>
@@ -126,11 +126,11 @@
 </button>
 <button type="button" class="policy-item" aria-expanded="false">
 <strong>Why INR and USD prices?</strong>
-<div class="policy-body">FINURA AI is based in India. List prices are shown in INR and approximate USD. Final invoicing currency, GST, and payment rails (including Razorpay) will be set at checkout. Prices shown exclude GST.</div>
+<div class="policy-body">FINURA AI is based in India. List prices are shown in INR and approximate USD. Final invoicing currency, GST, and payment rails (Cashfree) are set at checkout. Prices shown exclude GST.</div>
 </button>
 <button type="button" class="policy-item" aria-expanded="false">
 <strong>Can I pay today?</strong>
-<div class="policy-body">Paid checkout is not open yet (<code>BILLING_ENABLED</code> is off). Free accounts can sign up when self-serve is enabled. Use <strong>Join waitlist</strong> or <strong>Get early access</strong> for paid plans; Enterprise customers should use <strong>Contact sales</strong>.</div>
+<div class="policy-body">Yes for Starter and Business — sign in (or create an account), then Cashfree Checkout opens in TEST mode until live keys are enabled. Enterprise stays <strong>Contact sales</strong>. Free accounts can sign up without paying.</div>
 </button>
 <button type="button" class="policy-item" aria-expanded="false">
 <strong>Where are the legal policies?</strong>
@@ -142,7 +142,7 @@
 <section class="alt"><div class="wrap wrap-narrow" style="text-align:center">
 <span class="eyebrow">Next</span>
 <h2>Ready to start?</h2>
-<p class="lead" style="margin:16px auto 28px">Create a Free account, or join the waitlist for paid plans. We'll follow up when billing opens.</p>
+<p class="lead" style="margin:16px auto 28px">Create a Free account, or upgrade to Starter / Business with Cashfree Checkout. Enterprise? Contact sales.</p>
 <a class="btn p" data-plan-cta="free" data-early-href="/contact/?plan=free" data-early-label="Join waitlist" href="/auth/?plan=free">Start free</a>
 <a class="btn s" href="/demo/" style="margin-left:12px">Try live demo</a>
 </div></section>
@@ -164,6 +164,8 @@
 <p>FINURA AI Private Limited</p>
 <p>© 2026 FINURA AI Private Limited. All rights reserved.</p>
 </div></footer>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="/assets/js/config.js"></script>
 <script src="/assets/js/auth.js"></script>
 <script src="/assets/js/site.js"></script>

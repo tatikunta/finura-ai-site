@@ -318,6 +318,64 @@
     }
   }
 
+  function checkoutCurrency() {
+    const raw = (params.get("currency") || "INR").toUpperCase();
+    return raw === "USD" ? "USD" : "INR";
+  }
+
+  function setBillingStatus(message, kind) {
+    const status = $("#billing-status");
+    if (!status) return;
+    status.textContent = message || "";
+    status.className = "form-status" + (kind ? " " + kind : "");
+  }
+
+  function clearBillingQuery() {
+    try {
+      const url = new URL(location.href);
+      ["billing", "checkout", "order_id"].forEach(function (k) {
+        url.searchParams.delete(k);
+      });
+      const qs = url.searchParams.toString();
+      history.replaceState(
+        null,
+        "",
+        url.pathname + (qs ? "?" + qs : "") + (url.hash || "#billing")
+      );
+    } catch (_) {}
+  }
+
+  function handleBillingReturn() {
+    const billing = (params.get("billing") || "").toLowerCase();
+    if (!billing) return false;
+    selectTab("billing");
+    if (billing === "success") {
+      setBillingStatus(
+        "Payment received. Your plan updates once Cashfree confirms with our API (usually within a minute). Refresh if credits look unchanged.",
+        "ok"
+      );
+    } else if (billing === "failed" || billing === "failure") {
+      setBillingStatus(
+        "Payment did not complete. You can retry checkout below — no charge was applied.",
+        "err"
+      );
+    } else if (billing === "return" || billing === "cancelled" || billing === "cancel") {
+      const orderId = params.get("order_id");
+      setBillingStatus(
+        orderId
+          ? "Returned from Cashfree (order " +
+              orderId +
+              "). If you paid, the plan updates after the webhook — refresh shortly. Otherwise retry below."
+          : "Returned from Cashfree checkout. If you paid, refresh in a moment; otherwise retry below.",
+        ""
+      );
+    } else {
+      return false;
+    }
+    clearBillingQuery();
+    return true;
+  }
+
   function renderPlanActions() {
     const el = $("#plan-actions");
     if (!el) return;
@@ -327,7 +385,7 @@
       if (p.contact_sales) {
         const a = document.createElement("a");
         a.className = "btn s";
-        a.href = "/#contact";
+        a.href = "/contact/?plan=enterprise";
         a.textContent = "Contact sales";
         el.appendChild(a);
         return;
@@ -348,55 +406,54 @@
   }
 
   async function startCheckout(planId) {
-    const status = $("#billing-status");
     if (!cfg.BILLING_ENABLED && planId !== "free") {
       // Allow mock checkout when MOCK so screenshots work; otherwise explain.
       if (!api.shouldMock()) {
-        if (status) {
-          status.textContent =
-            "Billing is flagged off (BILLING_ENABLED=false). Enable it after Razorpay secrets are on Cloud Run.";
-          status.className = "form-status err";
-        }
+        setBillingStatus(
+          "Billing is flagged off (BILLING_ENABLED=false). Enable it after Cashfree TEST credentials are on Cloud Run.",
+          "err"
+        );
         return;
       }
     }
-    if (status) {
-      status.textContent = "Starting checkout…";
-      status.className = "form-status";
-    }
+    setBillingStatus("Starting Cashfree checkout…");
     try {
-      const res = await api.checkout(planId, "INR");
+      const currency = checkoutCurrency();
+      const res = await api.checkout(planId, currency);
       const data = res.data;
       if (data.provider === "local" || data._mock_activated) {
         await refreshMe();
-        if (status) {
-          status.textContent =
-            "Plan updated" + (data._mock_activated ? " (mock checkout)." : ".");
-          status.className = "form-status ok";
-        }
+        setBillingStatus(
+          "Plan updated" + (data._mock_activated ? " (mock checkout)." : "."),
+          "ok"
+        );
         return;
       }
-      await api.openRazorpayCheckout(data);
+      const outcome = await api.openCashfreeCheckout(data, {
+        mode: cfg.CASHFREE_MODE === "production" ? "production" : "sandbox",
+      });
       await refreshMe();
-      if (status) {
-        status.textContent = "Payment submitted — plan updates after webhook.";
-        status.className = "form-status ok";
+      if (outcome && outcome.redirected) {
+        setBillingStatus(
+          "Redirecting to Cashfree… If nothing opens, allow pop-ups and retry."
+        );
+        return;
       }
+      setBillingStatus(
+        "Payment submitted — plan updates after Cashfree webhook confirmation. Refresh if needed.",
+        "ok"
+      );
     } catch (err) {
       if (err.code === "dismissed") {
-        if (status) {
-          status.textContent = "Checkout closed.";
-          status.className = "form-status";
-        }
+        setBillingStatus("Checkout closed.");
         return;
       }
-      if (status) {
-        status.textContent =
-          err.code === "billing_disabled"
-            ? "Billing disabled on the API (503)."
-            : err.message || "Checkout failed";
-        status.className = "form-status err";
-      }
+      setBillingStatus(
+        err.code === "billing_disabled"
+          ? "Billing disabled on the API (503)."
+          : err.message || "Checkout failed",
+        "err"
+      );
     }
   }
 
@@ -417,7 +474,7 @@
         : "None";
       $("#bill-sub-hint").textContent = sub
         ? sub.plan_id || ""
-        : "No active Razorpay subscription";
+        : "No active Cashfree subscription";
     } catch (err) {
       $("#bill-flag").textContent = cfg.BILLING_ENABLED ? "?" : "Off";
       $("#bill-sub").textContent = "—";
@@ -592,7 +649,8 @@
       let tab = (location.hash || "").replace("#", "") || params.get("tab") || "overview";
       if (tab === "account" && !cfg.ACCOUNT_PRIVACY_ENABLED) tab = "overview";
       selectTab(tab);
-      if (params.get("checkout") === "1" && params.get("plan")) {
+      const returned = handleBillingReturn();
+      if (!returned && params.get("checkout") === "1" && params.get("plan")) {
         selectTab("billing");
         startCheckout(params.get("plan"));
       }

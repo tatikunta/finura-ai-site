@@ -271,10 +271,12 @@
   }
 
   /**
-   * Open Razorpay Checkout with the payload returned by POST .../billing/checkout.
-   * Resolves when payment succeeds; rejects on dismiss/failure.
+   * Open Cashfree Checkout with the session returned by POST .../billing/checkout.
+   * Uses only payment_session_id (and optional public key_id) from the API —
+   * never secrets. Resolves when the modal flow finishes; rejects on error/dismiss.
    */
-  function openRazorpayCheckout(checkoutRes) {
+  function openCashfreeCheckout(checkoutRes, options) {
+    options = options || {};
     return new Promise(function (resolve, reject) {
       if (!checkoutRes) {
         reject(new Error("Missing checkout response"));
@@ -284,38 +286,86 @@
         resolve({ mock: true, plan_id: checkoutRes.plan_id });
         return;
       }
-      if (typeof Razorpay === "undefined") {
-        reject(new Error("Razorpay Checkout.js not loaded"));
-        return;
-      }
+
       const payload = checkoutRes.checkout_payload || {};
-      const options = Object.assign({}, payload, {
-        key: checkoutRes.key_id || payload.key_id,
-        handler: function (response) {
-          resolve(response);
-        },
-        modal: {
-          ondismiss: function () {
-            reject(Object.assign(new Error("Checkout dismissed"), { code: "dismissed" }));
-          },
-        },
-      });
-      if (checkoutRes.subscription_id) {
-        options.subscription_id = checkoutRes.subscription_id;
-      }
-      if (checkoutRes.order_id) {
-        options.order_id = checkoutRes.order_id;
-      }
-      const rzp = new Razorpay(options);
-      rzp.on("payment.failed", function (resp) {
+      const paymentSessionId =
+        checkoutRes.payment_session_id ||
+        payload.payment_session_id ||
+        payload.paymentSessionId;
+      if (!paymentSessionId) {
         reject(
-          Object.assign(new Error("Payment failed"), {
-            code: "payment_failed",
-            data: resp,
+          Object.assign(new Error("Checkout response missing payment_session_id"), {
+            code: "missing_session",
           })
         );
-      });
-      rzp.open();
+        return;
+      }
+      if (typeof Cashfree !== "function") {
+        reject(new Error("Cashfree JS SDK not loaded"));
+        return;
+      }
+
+      const mode =
+        options.mode ||
+        (cfg().CASHFREE_MODE === "production" ? "production" : "sandbox");
+      const returnUrl =
+        options.returnUrl ||
+        location.origin +
+          "/app/?billing=return&order_id={order_id}" +
+          (checkoutRes.plan_id
+            ? "&plan=" + encodeURIComponent(checkoutRes.plan_id)
+            : "");
+
+      let cashfree;
+      try {
+        cashfree = Cashfree({ mode: mode });
+      } catch (err) {
+        reject(err);
+        return;
+      }
+
+      const checkoutOptions = {
+        paymentSessionId: paymentSessionId,
+        redirectTarget: options.redirectTarget || "_modal",
+        returnUrl: returnUrl,
+      };
+
+      Promise.resolve(cashfree.checkout(checkoutOptions))
+        .then(function (result) {
+          result = result || {};
+          if (result.error) {
+            const msg =
+              (result.error && (result.error.message || result.error.msg)) ||
+              "Payment failed";
+            reject(
+              Object.assign(new Error(msg), {
+                code: "payment_failed",
+                data: result.error,
+              })
+            );
+            return;
+          }
+          // Modal closed without completing, or user backed out.
+          if (result.redirect) {
+            resolve({ redirected: true, order_id: checkoutRes.order_id, result: result });
+            return;
+          }
+          resolve({
+            provider: "cashfree",
+            order_id: checkoutRes.order_id,
+            plan_id: checkoutRes.plan_id,
+            payment_session_id: paymentSessionId,
+            key_id: checkoutRes.key_id || payload.key_id || null,
+            result: result,
+          });
+        })
+        .catch(function (err) {
+          reject(
+            Object.assign(err || new Error("Checkout failed"), {
+              code: (err && err.code) || "checkout_failed",
+            })
+          );
+        });
     });
   }
 
@@ -339,6 +389,6 @@
     playgroundDecision,
     exportAccount,
     deleteAccount,
-    openRazorpayCheckout,
+    openCashfreeCheckout,
   };
 })(window);

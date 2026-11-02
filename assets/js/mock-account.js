@@ -324,7 +324,7 @@
       const cfg = global.FINURA_CONFIG || {};
       return {
         billing_enabled: !!cfg.BILLING_ENABLED,
-        provider: "razorpay",
+        provider: "cashfree",
         customer_id: state.subscription ? "cus_mock" : null,
         subscription: state.subscription,
         plan: { plan: plan },
@@ -352,6 +352,7 @@
           provider: "local",
           subscription_id: null,
           order_id: null,
+          payment_session_id: null,
           plan_id: "free",
           amount: 0,
           currency: (body && body.currency) || "INR",
@@ -365,7 +366,8 @@
           ? Math.round((next.price_usd || 0) * 100)
           : Math.round((next.price_inr || 0) * 100);
       const subId = "sub_mock_" + next.id;
-      // Simulate successful checkout locally (no Razorpay key in mock).
+      const orderId = "order_mock_" + next.id + "_" + Date.now().toString(36);
+      // Simulate successful checkout locally (no Cashfree secrets in mock).
       state.account.plan_id = next.id;
       state.account.seats = next.team_seats || 1;
       state.credits.granted = next.monthly_credits;
@@ -381,26 +383,23 @@
         amount: amount,
         currency: currency,
         status: "paid",
-        provider_invoice_id: "rzp_inv_mock",
+        provider_invoice_id: "cf_inv_mock",
         created_at: Math.floor(Date.now() / 1000),
       });
       save(state);
       return {
-        provider: "razorpay",
+        provider: "cashfree",
         subscription_id: subId,
-        order_id: null,
+        order_id: orderId,
+        payment_session_id: "session_mock_" + next.id,
         plan_id: next.id,
         amount: amount,
         currency: currency,
-        key_id: "rzp_test_mock",
+        key_id: "TEST_APP_ID_MOCK",
         checkout_payload: {
-          subscription_id: subId,
-          key_id: "rzp_test_mock",
-          prefill: { email: state.user.email },
-          notes: {
-            finura_account_id: state.account.id,
-            finura_plan_id: next.id,
-          },
+          payment_session_id: "session_mock_" + next.id,
+          order_id: orderId,
+          key_id: "TEST_APP_ID_MOCK",
         },
         _mock_activated: true,
       };
